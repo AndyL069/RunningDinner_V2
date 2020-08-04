@@ -1,0 +1,97 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Anmelden";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row justify-content-center text-center">
+    <div class="col-md-6">
+        <section class="page-section2">
+            <h4>Um fortzufahren, melde dich bei Großstadt Dinner an.</h4>
+            @{
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <div>
+                        <p>
+                            @foreach (var provider in Model.ExternalLogins)
+                            {
+                                if (provider.Name == "Facebook")
+                                {
+                                    <button type="submit" class="btn btn-block btn-social btn-facebook text-center" name="provider" value="@provider.Name" title="Mit Facebook anmelden"><span class="fab fa-facebook-f"></span> Mit Facebook anmelden</button>
+                                }
+
+                                else if (provider.Name == "Google")
+                                {
+                                    <button type="submit" class="btn btn-block btn-social btn-google text-center" name="provider" value="@provider.Name" title="Mit Google anmelden"><span class="fab fa-google"></span> Mit Google anmelden</button>
+                                }
+                            }
+                        </p>
+                    </div>
+                </form>
+            }
+            <strong class="separator">ODER</strong>
+            <form id="account" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <b><label style="float:left;">E-Mail</label></b>
+                <div class="form-group">
+                    <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+                        <i class="material-icons mdc-text-field__icon">email</i>
+                        <input asp-for="Input.Email" type="text" class="mdc-text-field__input" aria-labelledby="email-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <b><label style="float:left;">Passwort</label></b>
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input asp-for="Input.Password" type="password" class="mdc-text-field__input" aria-labelledby="password-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="Input.RememberMe">
+                            <input asp-for="Input.RememberMe" />
+                            @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                        <button type="submit" class="btn btn-primary">Anmelden</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p>
+                        <a id="forgot-password" asp-page="./ForgotPassword">Passwort vergessen?</a>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <p>
+                        <button type="submit" asp-page-handler="SendVerificationEmail" class="btn-link" style="padding:0px;margin:0px;border:0px;background:transparent;color: #1899B5">Bestätigungsmail erneut senden</button>
+                    </p>
+                </div>
+            </form>
+            <hr style="width: 100%" />
+            <h5>Du hast kein Konto?</h5>
+            <a asp-area="Identity" asp-page="/Account/Register"><input type="button" class="btn btn-primary" value="Bei Großstadt Dinner registrieren" /></a>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            mdc.autoInit();
+        });
+    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

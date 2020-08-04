@@ -1,0 +1,19 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Emailadresse bestätigt";
+}
+
+<h2>@ViewData["Title"]</h2>
+<div class="row bg-light justify-content-center text-center">
+    <div class="col-md-12">
+        <section>
+            <p>
+                Deine Emailadresse wurde erfolgreich bestätigt.
+            </p>
+            <p>
+                Du kannst dich jetzt zu einem unserer <a asp-controller="Home" asp-action="Index" asp-fragment="events">Events</a> anmelden.
+            </p>
+        </section>
+    </div>
+</div>

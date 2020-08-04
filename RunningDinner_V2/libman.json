@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/vendor/jqueryui/"
+    },
+    {
+      "library": "dropzone@5.5.1",
+      "destination": "wwwroot/vendor/dropzone/"
+    },
+    {
+      "library": "material-components-web@4.0.0",
+      "destination": "wwwroot/vendor/material-components"
+    }
+  ]
+}

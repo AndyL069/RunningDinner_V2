@@ -1,0 +1,43 @@
+﻿@page
+@model RunningDinner.Areas.Events.Pages.EventMapModel
+
+@using RunningDinner.Areas.Events.Views
+@{
+    ViewData["Title"] = "Einzugsgebiet";
+    ViewData.AddActivePage(EventNavPages.EventMap);
+}
+
+
+@section Header {
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <link rel="stylesheet" href="~/css/map.css">
+    <script src="~/js/newMap.js"></script>
+}
+
+<h4 class="text-uppercase page-header"><b>@ViewData["Title"]</b></h4>
+<div class="row">
+    <div class="col-md-9 bg-light">
+        <div id="map-container" class="map">
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    @section Scripts {
+        <div class="row">
+            <script type="text/javascript">
+                var mapCenterLat = @Html.Raw(Json.Serialize(ViewData["MapCenterLat"]));
+                var mapCenterLong = @Html.Raw(Json.Serialize(ViewData["MapCenterLong"]));
+                var apiKey = @Html.Raw(Json.Serialize(ViewData["apiKey"]));
+                $(document).ready(
+                    createMap(mapCenterLat, mapCenterLong, apiKey)
+                );
+            </script>
+        </div>
+    }
+</div>

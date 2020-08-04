@@ -1,0 +1,642 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Großstadt Dinner - Kochen, Essen und Connecten</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/vendor/bootstrap/css/bootstrap-social.css" rel="stylesheet">
+
+    <!-- jQuery UI -->
+    <link href="~/vendor/jqueryui/jquery-ui.min.css" rel="stylesheet" />
+
+    <!-- Material Components -->
+    <link href="~/vendor/material-components/material-components-web.css" rel="stylesheet" />
+
+    <!-- Custom fonts for this template -->
+    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="~/css/site.css" rel="stylesheet">
+
+    @RenderSection("Header", required: false)
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153240568-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-153240568-1');
+    </script>
+</head>
+
+<body id="page-top" data-spy="scroll" data-target="#mainNav">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="nav-button-brand navbar-brand js-scroll-trigger" asp-controller="Home" asp-action="Index" asp-fragment="page-top">
+                <img class="img-fluid" id="main-logo" src="~/img/logos/grossstadt_logo_trans.png" alt="">
+            </a>
+            <button id="toggler" class="nav-button navbar-toggler navbar-toggler-right ml-auto collapsed" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <div class="nav-icon">
+                    <div></div>
+                </div>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-button nav-link js-scroll-trigger text-nowrap" href="#howto">So geht's</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-button nav-link js-scroll-trigger text-nowrap" href="#timetable">Ablauf</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-button nav-link js-scroll-trigger text-nowrap" href="#events">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-button nav-link js-scroll-trigger text-nowrap" href="#team">Team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-button nav-link js-scroll-trigger text-nowrap" href="#contact">Kontakt</a>
+                    </li>
+                    @await Html.PartialAsync("_LoginPartial")
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer bg-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <span class="copyright">&copy; Großstadt Dinner @DateTime.Today.Year</span>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline social-buttons">
+                        <li class="list-inline-item">
+                            <a href="https://www.facebook.com/grossstadtdinner">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://www.instagram.com/grossstadtdinner/">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li class="list-inline-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#agbModal">AGB</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#privacyModal">Datenschutz</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#faqModal">FAQ</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="portfolio-link" data-toggle="modal" href="#imprintModal">Impressum</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- jQUery -->
+    <script src="~/vendor/jquery/jquery.min.js"></script>
+    <script src="~/vendor/jqueryui/jquery-ui.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Material Components -->
+    <script src="~/vendor/material-components/material-components-web.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Contact form JavaScript -->
+    <script src="~/js/jqBootstrapValidation.js"></script>
+    <script src="~/js/contact_me.js"></script>
+    <script src="~/js/signup_newsletter.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="~/js/site.js"></script>
+    @RenderSection("Scripts", required: false)
+
+    <!-- Privacy Modal -->
+    <div class="portfolio-modal modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl"></div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="modal-body">
+                                <!-- Details Go Here -->
+                                <h2 class="text-uppercase">Datenschutz&shy;erkl&auml;rung</h2>
+                                <h1>1. Datenschutz auf einen Blick</h1>
+                                <h3>Allgemeine Hinweise</h3> <p>Die folgenden Hinweise geben einen einfachen &Uuml;berblick dar&uuml;ber, was mit Ihren personenbezogenen Daten passiert, wenn Sie unsere Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie pers&ouml;nlich identifiziert werden k&ouml;nnen. Ausf&uuml;hrliche Informationen zum Thema Datenschutz entnehmen Sie unserer unter diesem Text aufgef&uuml;hrten Datenschutzerkl&auml;rung.</p>
+                                <h3>Datenerfassung auf unserer Website</h3> <p><strong>Wer ist verantwortlich f&uuml;r die Datenerfassung auf dieser Website?</strong></p> <p>Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten k&ouml;nnen Sie dem Impressum dieser Website entnehmen.</p> <p><strong>Wie erfassen wir Ihre Daten?</strong></p> <p>Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen. Hierbei kann es sich z.B. um Daten handeln, die Sie in ein Kontaktformular eingeben.</p> <p>Andere Daten werden automatisch beim Besuch der Website durch unsere IT-Systeme erfasst. Das sind vor allem technische Daten (z.B. Internetbrowser, Betriebssystem oder Uhrzeit des Seitenaufrufs). Die Erfassung dieser Daten erfolgt automatisch, sobald Sie unsere Website betreten.</p> <p><strong>Wof&uuml;r nutzen wir Ihre Daten?</strong></p> <p>Ein Teil der Daten wird erhoben, um eine fehlerfreie Bereitstellung der Website zu gew&auml;hrleisten. Andere Daten k&ouml;nnen zur Analyse Ihres Nutzerverhaltens verwendet werden.</p> <p><strong>Welche Rechte haben Sie bez&uuml;glich Ihrer Daten?</strong></p> <p>Sie haben jederzeit das Recht unentgeltlich Auskunft &uuml;ber Herkunft, Empf&auml;nger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben au&szlig;erdem ein Recht, die Berichtigung, Sperrung oder L&ouml;schung dieser Daten zu verlangen. Hierzu sowie zu weiteren Fragen zum Thema Datenschutz k&ouml;nnen Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden. Des Weiteren steht Ihnen ein Beschwerderecht bei der zust&auml;ndigen Aufsichtsbeh&ouml;rde zu.</p> <p>Au&szlig;erdem haben Sie das Recht, unter bestimmten Umst&auml;nden die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Details hierzu entnehmen Sie der Datenschutzerkl&auml;rung unter &bdquo;Recht auf Einschr&auml;nkung der Verarbeitung&ldquo;.</p> <strong>Analyse-Tools und Tools von Drittanbietern</strong> <p>Beim Besuch dieser Website kann Ihr Surf-Verhalten statistisch ausgewertet werden. Das geschieht vor allem mit Cookies und mit sogenannten Analyseprogrammen. Die Analyse Ihres Surf-Verhaltens erfolgt in der Regel anonym; das Surf-Verhalten kann nicht zu Ihnen zur&uuml;ckverfolgt werden.</p> <p>Sie k&ouml;nnen dieser Analyse widersprechen oder sie durch die Nichtbenutzung bestimmter Tools verhindern. Detaillierte Informationen zu diesen Tools und &uuml;ber Ihre Widerspruchsm&ouml;glichkeiten finden Sie in der folgenden Datenschutzerkl&auml;rung.</p>
+                                <h1>2. Hosting und Content Delivery Networks (CDN)</h1>
+                                <h3>Externes Hosting</h3> <p>Diese Website wird bei einem externen Dienstleister gehostet (Hoster). Die personenbezogenen Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert. Hierbei kann es sich v. a. um IP-Adressen, Kontaktanfragen, Meta- und Kommunikationsdaten, Vertragsdaten, Kontaktdaten, Namen, Webseitenzugriffe und sonstige Daten, die &uuml;ber eine Website generiert werden, handeln.</p> <p>Der Einsatz des Hosters erfolgt zum Zwecke der Vertragserf&uuml;llung gegen&uuml;ber unseren potenziellen und bestehenden Kunden (Art. 6 Abs. 1 lit. b DSGVO) und im Interesse einer sicheren, schnellen und effizienten Bereitstellung unseres Online-Angebots durch einen professionellen Anbieter (Art. 6 Abs. 1 lit. f DSGVO).</p> <p>Unser Hoster wird Ihre Daten nur insoweit verarbeiten, wie dies zur Erf&uuml;llung seiner Leistungspflichten erforderlich ist und unsere Weisungen in Bezug auf diese Daten befolgen.</p>
+                                <h1>3. Allgemeine Hinweise und Pflicht&shy;informationen</h1>
+                                <h3>Datenschutz</h3> <p>Die Betreiber dieser Seiten nehmen den Schutz Ihrer pers&ouml;nlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerkl&auml;rung.</p> <p>Wenn Sie diese Website benutzen, werden verschiedene personenbezogene Daten erhoben. Personenbezogene Daten sind Daten, mit denen Sie pers&ouml;nlich identifiziert werden k&ouml;nnen. Die vorliegende Datenschutzerkl&auml;rung erl&auml;utert, welche Daten wir erheben und wof&uuml;r wir sie nutzen. Sie erl&auml;utert auch, wie und zu welchem Zweck das geschieht.</p> <p>Wir weisen darauf hin, dass die Daten&uuml;bertragung im Internet (z.B. bei der Kommunikation per E-Mail) Sicherheitsl&uuml;cken aufweisen kann. Ein l&uuml;ckenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht m&ouml;glich.</p>
+                                <h3>Hinweis zur verantwortlichen Stelle</h3> <p>Die verantwortliche Stelle f&uuml;r die Datenverarbeitung auf dieser Website ist:</p> <p>
+                                    Andreas Lichtsinn<br />
+                                    Eppsteiner Stra&szlig;e 27<br />
+                                    60323 Frankfurt am Main
+                                </p>
+
+                                <p>
+                                    E-Mail: admin@grossstadtdinner.de
+                                </p>
+                                <p>Verantwortliche Stelle ist die nat&uuml;rliche oder juristische Person, die allein oder gemeinsam mit anderen &uuml;ber die Zwecke und Mittel der Verarbeitung von personenbezogenen Daten (z.B. Namen, E-Mail-Adressen o. &Auml;.) entscheidet.</p>
+                                <h3>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h3> <p>Viele Datenverarbeitungsvorg&auml;nge sind nur mit Ihrer ausdr&uuml;cklichen Einwilligung m&ouml;glich. Sie k&ouml;nnen eine bereits erteilte Einwilligung jederzeit widerrufen. Dazu reicht eine formlose Mitteilung per E-Mail an uns. Die Rechtm&auml;&szlig;igkeit der bis zum Widerruf erfolgten Datenverarbeitung bleibt vom Widerruf unber&uuml;hrt.</p>
+                                <h3>Widerspruchsrecht gegen die Datenerhebung in besonderen F&auml;llen sowie gegen Direktwerbung (Art. 21 DSGVO)</h3> <p><strong>Wenn die Datenverarbeitung auf Grundlage von Art. 6 Abs. 1 lit. e oder f DSGVO erfolgt, haben Sie jederzeit das Recht, aus Gr&uuml;nden, die sich aus Ihrer besonderen Situation ergeben, gegen die Verarbeitung Ihrer personenbezogenen Daten Widerspruch einzulegen; dies gilt auch f&uuml;r ein auf diese Bestimmungen gest&uuml;tztes Profiling. Die jeweilige Rechtsgrundlage, auf denen eine Verarbeitung beruht, entnehmen Sie dieser Datenschutzerkl&auml;rung. Wenn Sie Widerspruch einlegen, werden wir Ihre betroffenen personenbezogenen Daten nicht mehr verarbeiten, es sei denn, wir k&ouml;nnen zwingende schutzw&uuml;rdige Gr&uuml;nde f&uuml;r die Verarbeitung nachweisen, die Ihre Interessen, Rechte und Freiheiten &uuml;berwiegen oder die Verarbeitung dient der Geltendmachung, Aus&uuml;bung oder Verteidigung von Rechtsanspr&uuml;chen (Widerspruch nach Art. 21 Abs. 1 DSGVO).</strong></p> <p><strong>Werden Ihre personenbezogenen Daten verarbeitet, um Direktwerbung zu betreiben, so haben Sie das Recht, jederzeit Widerspruch gegen die Verarbeitung Sie betreffender personenbezogener Daten zum Zwecke derartiger Werbung einzulegen; dies gilt auch f&uuml;r das Profiling, soweit es mit solcher Direktwerbung in Verbindung steht. Wenn Sie widersprechen, werden Ihre personenbezogenen Daten anschlie&szlig;end nicht mehr zum Zwecke der Direktwerbung verwendet (Widerspruch nach Art. 21 Abs. 2 DSGVO).</strong></p>
+                                <h3>Beschwerderecht bei der zust&auml;ndigen Aufsichtsbeh&ouml;rde</h3> <p>Im Falle von Verstößen gegen die DSGVO steht den Betroffenen ein Beschwerderecht bei einer Aufsichtsbehörde, insbesondere in dem Mitgliedstaat ihres gewöhnlichen Aufenthalts, ihres Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes zu. Das Beschwerderecht besteht unbeschadet anderweitiger verwaltungsrechtlicher oder gerichtlicher Rechtsbehelfe.</p>
+                                <h3>Recht auf Daten&uuml;bertragbarkeit</h3> <p>Sie haben das Recht, Daten, die wir auf Grundlage Ihrer Einwilligung oder in Erf&uuml;llung eines Vertrags automatisiert verarbeiten, an sich oder an einen Dritten in einem g&auml;ngigen, maschinenlesbaren Format aush&auml;ndigen zu lassen. Sofern Sie die direkte &Uuml;bertragung der Daten an einen anderen Verantwortlichen verlangen, erfolgt dies nur, soweit es technisch machbar ist.</p>
+                                <h3>SSL- bzw. TLS-Verschl&uuml;sselung</h3> <p>Diese Seite nutzt aus Sicherheitsgr&uuml;nden und zum Schutz der &Uuml;bertragung vertraulicher Inhalte, wie zum Beispiel Bestellungen oder Anfragen, die Sie an uns als Seitenbetreiber senden, eine SSL-bzw. TLS-Verschl&uuml;sselung. Eine verschl&uuml;sselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von &ldquo;http://&rdquo; auf &ldquo;https://&rdquo; wechselt und an dem Schloss-Symbol in Ihrer Browserzeile.</p> <p>Wenn die SSL- bzw. TLS-Verschl&uuml;sselung aktiviert ist, k&ouml;nnen die Daten, die Sie an uns &uuml;bermitteln, nicht von Dritten mitgelesen werden.</p>
+                                <h3>Auskunft, Sperrung, L&ouml;schung und Berichtigung</h3> <p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf unentgeltliche Auskunft &uuml;ber Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empf&auml;nger und den Zweck der Datenverarbeitung und ggf. ein Recht auf Berichtigung, Sperrung oder L&ouml;schung dieser Daten. Hierzu sowie zu weiteren Fragen zum Thema personenbezogene Daten k&ouml;nnen Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden.</p>
+                                <h3>Recht auf Einschr&auml;nkung der Verarbeitung</h3> <p>Sie haben das Recht, die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Hierzu k&ouml;nnen Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden. Das Recht auf Einschr&auml;nkung der Verarbeitung besteht in folgenden F&auml;llen:</p>
+                                <ul> <li>Wenn Sie die Richtigkeit Ihrer bei uns gespeicherten personenbezogenen Daten bestreiten, ben&ouml;tigen wir in der Regel Zeit, um dies zu &uuml;berpr&uuml;fen. F&uuml;r die Dauer der Pr&uuml;fung haben Sie das Recht, die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li> <li>Wenn die Verarbeitung Ihrer personenbezogenen Daten unrechtm&auml;&szlig;ig geschah / geschieht, k&ouml;nnen Sie statt der L&ouml;schung die Einschr&auml;nkung der Datenverarbeitung verlangen.</li> <li>Wenn wir Ihre personenbezogenen Daten nicht mehr ben&ouml;tigen, Sie sie jedoch zur Aus&uuml;bung, Verteidigung oder Geltendmachung von Rechtsanspr&uuml;chen ben&ouml;tigen, haben Sie das Recht, statt der L&ouml;schung die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li> <li>Wenn Sie einen Widerspruch nach Art. 21 Abs. 1 DSGVO eingelegt haben, muss eine Abw&auml;gung zwischen Ihren und unseren Interessen vorgenommen werden. Solange noch nicht feststeht, wessen Interessen &uuml;berwiegen, haben Sie das Recht, die Einschr&auml;nkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li> </ul> <p>Wenn Sie die Verarbeitung Ihrer personenbezogenen Daten eingeschr&auml;nkt haben, d&uuml;rfen diese Daten &ndash; von ihrer Speicherung abgesehen &ndash; nur mit Ihrer Einwilligung oder zur Geltendmachung, Aus&uuml;bung oder Verteidigung von Rechtsanspr&uuml;chen oder zum Schutz der Rechte einer anderen nat&uuml;rlichen oder juristischen Person oder aus Gr&uuml;nden eines wichtigen &ouml;ffentlichen Interesses der Europ&auml;ischen Union oder eines Mitgliedstaats verarbeitet werden.</p>
+                                <h3>Widerspruch gegen Werbe-E-Mails</h3> <p>Der Nutzung von im Rahmen der Impressumspflicht ver&ouml;ffentlichten Kontaktdaten zur &Uuml;bersendung von nicht ausdr&uuml;cklich angeforderter Werbung und Informationsmaterialien wird hiermit widersprochen. Die Betreiber der Seiten behalten sich ausdr&uuml;cklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-E-Mails, vor.</p>
+                                <h1>4. Daten&shy;erfassung auf unserer Website</h1>
+                                <h3>Cookies</h3> <p>Unsere Internetseiten verwenden so genannte &bdquo;Cookies&ldquo;. Cookies sind kleine Textdateien und richten auf Ihrem Endger&auml;t keinen Schaden an. Sie werden entweder vor&uuml;bergehend f&uuml;r die Dauer einer Sitzung (Session-Cookies) oder dauerhaft (permanente Cookies) auf Ihrem Endger&auml;t gespeichert. Session-Cookies werden nach Ende Ihres Besuchs automatisch gel&ouml;scht. Permanente Cookies bleiben auf Ihrem Endger&auml;t gespeichert bis Sie diese selbst l&ouml;schen&nbsp;oder eine automatische L&ouml;sung durch Ihren Webbrowser erfolgt.</p> <p>Teilweise k&ouml;nnen auch Cookies von Drittunternehmen auf Ihrem Endger&auml;t gespeichert werden, wenn Sie unsere Seite betreten (Third-Party-Cookies). Diese erm&ouml;glichen uns oder Ihnen die Nutzung bestimmter Dienstleistungen des Drittunternehmens (z.B. Cookies zur Abwicklung von Zahlungsdienstleistungen).</p> <p>Cookies haben verschiedene Funktionen. Zahlreiche Cookies sind technisch notwendig, da bestimmte Webseitenfunktionen ohne diese nicht funktionieren w&uuml;rden (z.B. die Warenkorbfunktion oder die Anzeige von Videos). Andere Cookies dienen dazu das Nutzerverhalten auszuwerten&nbsp;oder Werbung anzuzeigen.</p> <p>Technisch notwendige Cookies (z.B. Warenkorb-Cookies) werden auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO gespeichert. Wir haben ein berechtigtes Interesse an der Speicherung von Cookies zur technisch fehlerfreien und optimierten Bereitstellung unserer Dienste. Andere Cookies werden nur mit Ihrer Einwilligung auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO gespeichert. Die Einwilligung ist jederzeit f&uuml;r die Zukunft widerrufbar.</p> <p>Sie k&ouml;nnen Ihren Browser so einstellen, dass Sie &uuml;ber das Setzen von Cookies informiert werden und Cookies nur im Einzelfall erlauben, die Annahme von Cookies f&uuml;r bestimmte F&auml;lle oder generell ausschlie&szlig;en sowie das automatische L&ouml;schen der Cookies beim Schlie&szlig;en des Browsers aktivieren. Bei der Deaktivierung von Cookies kann die Funktionalit&auml;t dieser Website eingeschr&auml;nkt sein.</p> <p>Soweit Cookies von Drittunternehmen oder zu Analysezwecken eingesetzt werden, werden wir Sie hier&uuml;ber im Rahmen dieser Datenschutzerkl&auml;rung gesondert informieren und ggf. eine Einwilligung abfragen.</p>
+                                <h3>Server-Log-Dateien</h3> <p>Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns &uuml;bermittelt. Dies sind:</p>
+                                <ul> <li>Browsertyp und Browserversion</li> <li>verwendetes Betriebssystem</li> <li>Referrer URL</li> <li>Hostname des zugreifenden Rechners</li> <li>Uhrzeit der Serveranfrage</li> <li>IP-Adresse</li> </ul> <p>Eine Zusammenf&uuml;hrung dieser Daten mit anderen Datenquellen wird nicht vorgenommen.</p> <p>Die Erfassung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber hat ein berechtigtes Interesse an der technisch fehlerfreien Darstellung und der Optimierung seiner Website &ndash; hierzu m&uuml;ssen die Server-Log-Files erfasst werden.</p>
+                                <h3>Kontaktformular</h3> <p>Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und f&uuml;r den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p> <p>Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erf&uuml;llung eines Vertrags zusammenh&auml;ngt oder zur Durchf&uuml;hrung vorvertraglicher Ma&szlig;nahmen erforderlich ist. In allen &uuml;brigen F&auml;llen beruht die Verarbeitung auf unserem berechtigten Interesse an der effektiven Bearbeitung der an uns gerichteten Anfragen (Art. 6 Abs. 1 lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) sofern diese abgefragt wurde.</p> <p>Die von Ihnen im Kontaktformular eingegebenen Daten verbleiben bei uns, bis Sie uns zur L&ouml;schung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck f&uuml;r die Datenspeicherung entf&auml;llt (z.&nbsp;B. nach abgeschlossener Bearbeitung Ihrer Anfrage). Zwingende gesetzliche Bestimmungen &ndash; insbesondere Aufbewahrungsfristen &ndash; bleiben unber&uuml;hrt.</p>
+                                <h1>5. Analyse-Tools und Werbung</h1>
+                                <p>Soweit Sie Ihre Einwilligung erklärt haben, wird auf dieser Website Google Analytics eingesetzt, ein Webanalysedienst der Google Ireland Limited (&bdquo;Google&ldquo;). Die Nutzung umfasst die Betriebsart &bdquo;Universal Analytics&ldquo;. Hierdurch ist es möglich, Daten, Sitzungen und Interaktionen über mehrere Geräte hinweg einer pseudonymen User-ID zuzuordnen und so die Aktivitäten eines Nutzers geräteübergreifend zu analysieren.</p>
+                                <p>Google Analytics verwendet sog. &bdquo;Cookies&ldquo;, Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung der Website durch Sie ermöglichen. Die durch das Cookie erzeugten Informationen über Ihre Benutzung dieser Website werden in der Regel an einen Server von Google in den USA übertragen und dort gespeichert. Im Falle der Aktivierung der IP-Anonymisierung auf dieser Website, wird Ihre IP-Adresse von Google jedoch innerhalb von Mitgliedstaaten der Europäischen Union oder in anderen Vertragsstaaten des Abkommens über den Europäischen Wirtschaftsraum zuvor gekürzt. Wir weisen Sie darauf hin, dass auf dieser Webseite Google Analytics um eine IP-Anonymisierung erweitert wurde, um eine anonymisierte Erfassung von IP-Adressen (sog. IP-Masking) zu gewährleisten. Die im Rahmen von Google Analytics von Ihrem Browser übermittelte IP-Adresse wird nicht mit anderen Daten von Google zusammengeführt. Nähere Informationen zu Nutzungsbedingungen und Datenschutz finden Sie unter <a href="https://www.google.com/analytics/terms/de.html" target="_blank">https://www.google.com/analytics/terms/de.html</a> bzw. unter <a href="https://policies.google.com/?hl=de" target="_blank">https://policies.google.com/?hl=de</a>.</p>
+                                <p>
+                                    <strong>Zwecke der Verarbeitung</strong><br>
+                                    Im Auftrag des Betreibers dieser Website wird Google diese Informationen benutzen, um Ihre Nutzung der Website auszuwerten, um Reports über die Websiteaktivitäten zusammenzustellen und um weitere mit der Websitenutzung und der Internetnutzung verbundene Dienstleistungen gegenüber dem Websitebetreiber zu erbringen.
+                                </p>
+                                <p>
+                                    <strong>Rechtsgrundlage</strong><br>
+                                    Die Rechtsgrundlage für den Einsatz von Google Analytics ist Ihre Einwilligung gemäß <a href="https://dsgvo-gesetz.de/art-6-dsgvo/" target="_blank">Art. 6 Abs. 1 S.1 lit. a DSGVO</a>.
+                                </p>
+                                <p>
+                                    <strong>Empfänger / Kategorien von Empfängern</strong><br>
+                                    Der Empfänger der erhobenen Daten ist Google.
+                                </p>
+                                <p>
+                                    <strong>Übermittlung in Drittstaaten</strong><br>
+                                    Die personenbezogenen Daten werden unter dem EU-US Privacy Shield auf Grundlage des Angemessenheitsbeschlusses der Europäischen Kommission in die USA übermittelt. Das Zertifikat können Sie <a href="https://www.privacyshield.gov/participant?id=a2zt000000001L5AAI" target="_blank">hier</a> abrufen.
+                                </p>
+                                <p>
+                                    <strong>Dauer der Datenspeicherung</strong><br>
+                                    Die von uns gesendeten und mit Cookies, Nutzerkennungen (z. B. User-ID) oder Werbe-IDs verknüpften Daten werden nach 14 Monaten automatisch gelöscht. Die Löschung von Daten, deren Aufbewahrungsdauer erreicht ist, erfolgt automatisch einmal im Monat.
+                                </p>
+                                <p>
+                                    <strong>Betroffenenrechte</strong><br>
+                                    Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen, indem Sie die Speicherung der Cookies durch eine entsprechende Einstellung Ihrer Browser-Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website vollumfänglich werden nutzen können.
+                                </p>
+                                <p>Quelle: <a href="https://www.datenschutzbeauftragter-info.de/fachbeitraege/google-analytics-datenschutzkonform-einsetzen/">datenschutzbeauftragter-info.de</a></p>
+                                <h1>6. Newsletter</h1>
+                                <h3>Newsletterdaten</h3>
+                                <p>Wenn Sie den auf der Website angebotenen Newsletter beziehen m&ouml;chten, ben&ouml;tigen wir von Ihnen eine E-Mail-Adresse sowie Informationen, welche uns die &Uuml;berpr&uuml;fung gestatten, dass Sie der Inhaber der angegebenen E-Mail-Adresse sind und mit dem Empfang des Newsletters einverstanden sind. Weitere Daten werden nicht bzw. nur auf freiwilliger Basis erhoben. Diese Daten verwenden wir ausschlie&szlig;lich f&uuml;r den Versand der angeforderten Informationen und geben diese nicht an Dritte weiter.</p>
+                                <p>Die Verarbeitung der in das Newsletteranmeldeformular eingegebenen Daten erfolgt ausschlie&szlig;lich auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Die erteilte Einwilligung zur Speicherung der Daten, der E-Mail-Adresse sowie deren Nutzung zum Versand des Newsletters k&ouml;nnen Sie jederzeit widerrufen, etwa &uuml;ber den &bdquo;Austragen&ldquo;-Link im Newsletter. Die Rechtm&auml;&szlig;igkeit der bereits erfolgten Datenverarbeitungsvorg&auml;nge bleibt vom Widerruf unber&uuml;hrt.</p>
+                                <p>Der Versand der Newsletter erfolgt über den Versanddienstleister Mailjet (SAS Mailjet, 13-13bis, Rue de l’Aubrac  – 75012 Paris, Frankreich). Die dafür geltenden Datenschutzrichtlinien von Mailjet finden Sie unter <a href="https://www.mailjet.de/privacy-policy/">https://www.mailjet.de/privacy-policy/</a></p>
+                                <p>Der Versanddienstleister kann Ihre Daten in pseudonymer Form, d.h. ohne Zuordnung zu einem Nutzer, zur Optimierung oder Verbesserung der eigenen Services nutzen, z.B. zur technischen Optimierung des Versandes und der Darstellung der Newsletter oder für statistische Zwecke verwenden. Der Versanddienstleister nutzt Ihre Daten aus dem Bezug des Newsletters von Großstadt Dinner ausschließlich im Rahmen der Auftragsverarbeitung für Großstadt Dinner und nicht, um Sie selbst anzuschreiben oder um die Daten an Dritte weiterzugeben.</p>
+                                <p>Die von Ihnen zum Zwecke des Newsletter-Bezugs bei uns hinterlegten Daten werden von uns bis zu Ihrer Austragung aus dem Newsletter bei uns bzw. dem Newsletterdiensteanbieter gespeichert und nach der Abbestellung des Newsletters aus der Newsletterverteilerliste gel&ouml;scht. Daten, die zu anderen Zwecken bei uns gespeichert wurden bleiben hiervon unber&uuml;hrt.</p> <p>Nach Ihrer Austragung aus der Newsletterverteilerliste wird Ihre E-Mail-Adresse bei uns bzw. dem Newsletterdiensteanbieter ggf. in einer Blacklist gespeichert, um k&uuml;nftige Mailings zu verhindern. Die Daten aus der Blacklist werden nur f&uuml;r diesen Zweck verwendet und nicht mit anderen Daten zusammengef&uuml;hrt. Dies dient sowohl Ihrem Interesse als auch unserem Interesse an der Einhaltung der gesetzlichen Vorgaben beim Versand von Newslettern (berechtigtes Interesse im Sinne des Art. 6 Abs. 1 lit. f DSGVO). Die Speicherung in der Blacklist ist zeitlich nicht befristet. <strong>Sie k&ouml;nnen der Speicherung widersprechen, sofern Ihre Interessen unser berechtigtes Interesse &uuml;berwiegen.</strong></p>
+                                <h1>7. Plugins und Tools</h1>
+                                <h3>Google Web Fonts</h3> <p>Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten so genannte Web Fonts, die von Google bereitgestellt werden. Beim Aufruf einer Seite l&auml;dt Ihr Browser die ben&ouml;tigten Web Fonts in ihren Browsercache, um Texte und Schriftarten korrekt anzuzeigen.</p> <p>Zu diesem Zweck muss der von Ihnen verwendete Browser Verbindung zu den Servern von Google aufnehmen. Hierdurch erlangt Google Kenntnis dar&uuml;ber, dass &uuml;ber Ihre IP-Adresse unsere Website aufgerufen wurde. Die Nutzung von Google Web Fonts erfolgt im Interesse einer einheitlichen und ansprechenden Darstellung unserer Online-Angebote. Dies stellt ein berechtigtes Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar.</p> <p>Wenn Ihr Browser Web Fonts nicht unterst&uuml;tzt, wird eine Standardschrift von Ihrem Computer genutzt.</p> <p>Weitere Informationen zu Google Web Fonts finden Sie unter <a href="https://developers.google.com/fonts/faq" target="_blank" rel="noopener">https://developers.google.com/fonts/faq</a> und in der Datenschutzerkl&auml;rung von Google: <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener">https://policies.google.com/privacy?hl=de</a>.</p>
+                                <h3>Font Awesome</h3> <p>Diese Seite nutzt zur einheitlichen Darstellung von Icons so genannte Web Fonts, die von Fonticons, Inc bereitgestellt werden. Beim Aufruf einer Seite l&auml;dt Ihr Browser die ben&ouml;tigten Web Fonts in ihren Browsercache, um Icons korrekt anzuzeigen.</p> <p>Zu diesem Zweck muss der von Ihnen verwendete Browser Verbindung zu den Servern von Font Awesome aufnehmen. Hierdurch erlangt Fonticons, Inc Kenntnis dar&uuml;ber, dass &uuml;ber Ihre IP-Adresse unsere Website aufgerufen wurde. Die Nutzung von Font Awesome Icons erfolgt im Interesse einer einheitlichen und ansprechenden Darstellung unserer Online-Angebote. Dies stellt ein berechtigtes Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar.</p> <p>Wenn Ihr Browser Web Fonts nicht unterst&uuml;tzt, wird eine Standardschrift von Ihrem Computer genutzt.</p> <p>Weitere Informationen zu Font Awesome finden Sie unter <a href="https://fontawesome.com/icons?d=gallery" target="_blank" rel="noopener">https://fontawesome.com/icons?d=gallery</a> und in der Datenschutzerkl&auml;rung von Font Awesome: <a href="https://fontawesome.com/privacy" target="_blank" rel="noopener">https://fontawesome.com/privacy</a>.</p>
+                                <h3>HERE Maps</h3> <p>Diese Seite nutzt &uuml;ber eine API den Kartendienst HERE Maps. Anbieter ist die HERE Global B.V., Kennedyplein 222-226, 5611 ZT Eindhoven, Niederlande.</p> <p>Zur Nutzung der Funktionen von HERE Maps ist es notwendig, Ihre IP Adresse zu speichern. Diese Informationen werden in der Regel an einen Server von HERE in die Niederlande &uuml;bertragen und dort gespeichert. Der Anbieter dieser Seite hat keinen Einfluss auf diese Daten&uuml;bertragung.</p> <p>Die Nutzung von HERE Maps erfolgt im Interesse einer ansprechenden Darstellung unserer Online-Angebote und an einer leichten Auffindbarkeit der von uns auf der Website angegebenen Orte. Dies stellt ein berechtigtes Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar.</p> <p>Mehr Informationen zum Umgang mit Nutzerdaten finden Sie in der Datenschutzerkl&auml;rung von HERE: <a href="https://legal.here.com/de-de/privacy/here-application-and-here-maps-privacy-supplement" target="_blank" rel="noopener">https://legal.here.com/de-de/privacy/here-application-and-here-maps-privacy-supplement</a>.</p>
+                                <p>Quelle: <a href="https://www.e-recht24.de">eRecht24</a></p>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                    <i class="fas fa-times"></i>
+                                    Schließen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Impressum Modal -->
+    <div class="portfolio-modal modal fade" id="imprintModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl"></div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="modal-body">
+                                <!-- Details Go Here -->
+                                <h2 class="text-uppercase">Impressum</h2>
+
+                                <h1>Angaben gem&auml;&szlig; &sect; 5 TMG</h1>
+                                <p>
+                                    Andreas Lichtsinn<br />
+                                    Eppsteiner Str. 27<br />
+                                    60323 Frankfurt am Main
+                                </p>
+
+                                <h1>Kontakt</h1>
+                                <p>
+                                    E-Mail: admin@grossstadtdinner.de
+                                </p>
+
+                                <h1>Haftung f&uuml;r Inhalte</h1> <p>Als Diensteanbieter sind wir gem&auml;&szlig; &sect; 7 Abs.1 TMG f&uuml;r eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach &sect;&sect; 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, &uuml;bermittelte oder gespeicherte fremde Informationen zu &uuml;berwachen oder nach Umst&auml;nden zu forschen, die auf eine rechtswidrige T&auml;tigkeit hinweisen.</p> <p>Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unber&uuml;hrt. Eine diesbez&uuml;gliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung m&ouml;glich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p>
+                                <h1>Haftung f&uuml;r Links</h1> <p>Unser Angebot enth&auml;lt Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb k&ouml;nnen wir f&uuml;r diese fremden Inhalte auch keine Gew&auml;hr &uuml;bernehmen. F&uuml;r die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf m&ouml;gliche Rechtsverst&ouml;&szlig;e &uuml;berpr&uuml;ft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar.</p> <p>Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</p>
+                                <h1>Urheberrecht</h1> <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielf&auml;ltigung, Bearbeitung, Verbreitung und jede Art der Verwertung au&szlig;erhalb der Grenzen des Urheberrechtes bed&uuml;rfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur f&uuml;r den privaten, nicht kommerziellen Gebrauch gestattet.</p> <p>Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.</p>
+
+                                <p>Quelle: <a href="https://www.e-recht24.de/impressum-generator.html">e-recht24</a></p>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                    <i class="fas fa-times"></i>
+                                    Schließen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Modal -->
+    <div class="portfolio-modal modal fade" id="faqModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl"></div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="modal-body">
+                                <!-- Details Go Here -->
+                                <h2 class="text-uppercase">Frequently Asked Questions</h2>
+
+                                <h1>Was ist ein Running Dinner?</h1>
+                                <p>
+                                    <b>Kochen, gemeinsam Essen und Connecten.</b>
+                                </p>
+                                <p>Drei Gänge (Vorspeise, Hauptgang und Dessert) kreuz und quer durch die Stadt.</p>
+                                <p>Bei Euch zu Hause sowie woanders, mit Freunden und neuen Großstadtmenschen.</p>
+                                <p>Es muss kein 5 Sterne essen serviert werden, es geht rein um den Spaß und das Connecten an diesem Abend.</p>
+
+                                <h1>Wie ist der Ablauf?</h1>
+                                <p>Jeweils zwei Personen kochen zusammen im Team einen Gang.</p>
+                                <p>Der Gang (Vorspeise, Hauptspeise oder Nachtisch) wird euch zugelost.</p>
+                                <p>Ihr habt bei eurem Gang zwei weitere Teams als Gäste.</p>
+                                <p>Zu den anderen beiden Gängen werdet ihr eingeladen und müsst die Location wechseln.</p>
+                                <p>Im Anschluss: Get together - Bei der After-Party triffst Du dann alle Teilnehmer des Abends.</p>
+
+                                <h1>Kostet das was?</h1>
+                                <p>Die Teilnahme ist kostenlos, lediglich die Zutaten für Euren Gang bezahlt ihr selbst.</p>
+
+                                <h1>Ich habe keine Küche, kann ich trotzdem mitmachen?</h1>
+                                <p>Da das Kochen immer in Zweier-Teams organisiert ist, muss nur einer der Partner eine Küche haben.</p>
+
+                                <h1>Gibt es ein Thema oder kann ich kochen was ich will?</h1>
+                                <p>Grundsätzlich seid ihr völlig frei in dem was ihr kocht, Hauptsache es macht euch Spaß und ihr berücksichtigt eventuelle Allergien/Unverträglichkeiten eurer Gäste.</p>
+
+                                <h1>Für wieviele Leute muss ich kochen?</h1>
+                                <p>Pro Gang wird für sechs Leute gekocht (zwei Gastgeber und vier Gäste).</p>
+
+                                <h1>Kann ich auch einfach nur mitessen?</h1>
+                                <p>Nein, das geht nicht. Jedes Team gibt sich Mühe und hat Ausgaben für seinen Gang, sodass es sicherlich nicht gut ankäme wenn einer nur mitisst.</p>
+
+                                <h1>Wieviele können sich für ein Event anmelden?</h1>
+                                <p>Prinzipiell ist die Anzahl unbegrenzt, wir freuen uns über jeden der teilnehmen möchte.</p>
+
+                                <h1>Wo kann ich meine Daten ändern? </h1>
+                                <p>Eure Profildaten (z.B. Passwort) könnt ihr jederzeit unter "Profil" ändern, eure Angaben zum Event wie Kochpartner, Adresse, etc. im jeweiligen Event unter "Anmeldedaten". </p>
+
+                                <h1>Wann weiß ich welchen Gang wir kochen?</h1>
+                                <p>Sobald der Anmeldeschluss rum ist, machen wir uns an die Planung und versuchen euch so bald wie möglich das Ergebnis der Planung mitzuteilen.</p>
+
+                                <h1>Wenn man sich zu zweit anmelden möchte, wie geht das?</h1>
+                                <p>Zunächst registriert sich jeder einzeln auf der Seite, danach müsst ihr euch noch zu dem jeweiligen Event anmelden. Anschließend tragt ihr euch gegenseitig als Kochpartner ein.</p>
+
+                                <h1>Um wieviel Uhr startet ein Running Dinner?</h1>
+                                <p>Vorspeise: 17:30</p>
+                                <p>Hauptspeise: 19:30</p>
+                                <p>Nachtisch: 21:30</p>
+                                <p>After Party: Ab 23:00</p>
+
+                                <h1>Ich habe eine Frage die hier nicht beantwortet wurde.</h1>
+                                <p>Kontaktiert uns gerne über admin@grossstadtdinner.de und wir werden versuchen euch zeitnah zu antworten.</p>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                    <i class="fas fa-times"></i>
+                                    Schließen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AGB Modal -->
+    <div class="portfolio-modal modal fade" id="agbModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl"></div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="modal-body">
+                                <!-- Details Go Here -->
+                                <h2 class="text-uppercase">Allgemeine Geschäfts- und Nutzungs&shy;bedingung&shy;en</h2>
+                                <p>Stand: 27.11.2019</p>
+
+                                <p>
+                                    Mit Deiner Anmeldung bei grossstadtdinner.de oder anderer Anmeldeseiten im
+                                    Zusammenhang mit "Großstadt Dinner", einschließlich
+                                    aller dazugehöriger Länder- und Sub-Domains (nachfolgend "Betreiber"
+                                    genannt) erklärst Du Dich mit den hier aufgeführten Nutzungsbedingungen
+                                    einverstanden.
+                                </p>
+
+                                <p>
+                                    Du erteilst Dein Einverständnis, indem Du während des Anmeldeprozesses
+                                    die AGB zur Kenntnis nimmst und Deine Zustimmung zu diesen Allgemeinen
+                                    Nutzungsbedingungen gibst.
+                                </p>
+
+                                <p>
+                                    Solltest Du mit den Allgemeinen Geschäfts- und Nutzungsbedingungen
+                                    nicht einverstanden sein, musst Du leider von einer Anmeldung bei Großstadt Dinner
+                                    absehen. Des Weiteren dürfen nur solche Leute den Service nutzen, die
+                                    das 18. Lebensjahr vollendet haben.
+                                </p>
+
+                                <p>
+                                    Der Betreiber behält sich vor, diese Nutzungsbedingungen jederzeit und
+                                    ohne Nennung von Gründen zu ändern. Die geänderten Bedingungen werden
+                                    dem Nutzer dann per E-Mail zwei Wochen vor ihrem Inkrafttreten
+                                    zugesandt. Wenn der Nutzer innerhalb von zwei Wochen nach Empfang der
+                                    E- Mail nicht widersprochen hat, gelten die geänderten Bedingungen als
+                                    angenommen. Auf die besondere Bedeutung der Zweiwochenfrist wird der
+                                    Nutzer in der E-Mail des Betreibers separat hingewiesen.
+                                </p>
+
+                                <h3>§ 1 Gültigkeit</h3>
+
+                                <p>
+                                    (1) Für den Verkehr zwischen dem Betreiber und den Nutzern von Großstadt Dinner
+                                    (nachfolgend "Nutzer" genannt) gelten die nachstehenden Allgemeinen
+                                    Nutzungsbedingungen. Abweichende Bedingungen des Nutzers, die mit
+                                    diesen Allgemeinen Nutzungsbedingungen in Widerspruch stehen, finden
+                                    keine Berücksichtigung.
+                                </p>
+
+                                <p>
+                                    (2) Innerhalb dieses Vertragsverhältnisses behalten diese Allgemeinen
+                                    Geschäfts- und Nutzungsbedingungen auch dann Gültigkeit, wenn bei
+                                    Inanspruchnahme weiterer Dienste nicht gesondert darauf hingewiesen
+                                    wird.
+                                </p>
+
+                                <h3>§ 2 Vertragsabschluss und Laufzeit</h3>
+
+                                <p>
+                                    (1) Der Nutzer versichert gegenüber dem Betreiber, das 18. Lebensjahr
+                                    vollendet zu haben.
+                                </p>
+
+                                <p>
+                                    (2) Der Betreiber ist berechtigt, die Personalien des Nutzers anhand
+                                    geeigneter amtlicher Papiere zu prüfen und das Konto des Nutzers
+                                    gegebenenfalls ohne Nennung von Gründen zu löschen.
+                                </p>
+
+                                <p>
+                                    (3) Der Vertrag ist geschlossen, sobald der Nutzer sich erfolgreich bei
+                                    Großstadt Dinner oder anderen Anmeldeseiten im Zusammenhang mit Großstadt Dinner einschließlich
+                                    aller dazugehöriger Länder- und Sub-Domains angemeldet hat.
+                                </p>
+
+                                <h3>§ 3 Preise für Endnutzer</h3>
+
+                                <p>
+                                    (1) Die Anmeldung auf Großstadt Dinner oder anderen Anmeldeseiten im Zusammenhang mit Großstadt Dinner
+                                    ist für den Endnutzer kostenlos. Der Betreiber behält sich jedoch das
+                                    Recht vor, die Nutzung von bestimmten Diensten auf der Plattform zur
+                                    gegebenen Zeit entgeltlich zu gestalten und/oder über Werbung Einnahmen
+                                    zu erzielen. Bei Inanspruchnahme von entgeltlichen Diensten akzeptiert
+                                    der Nutzer die damit verbundene Zahlungsverpflichtung durch Klicken auf
+                                    das in diesem Fall angebotene Bestätigungsfeld.
+                                </p>
+
+                                <h3>§ 4 Abmeldung, Kündigung und Vertragsauflösung</h3>
+
+                                <p>
+                                    (1) Ein Nutzer ist jederzeit berechtigt, sich ohne Angabe von Gründen
+                                    schriftlich oder per E-Mail abzumelden. Mit der Abmeldung wird der für
+                                    die Profile des Nutzers gespeicherte Datensatz, der persönliche Daten
+                                    des Nutzers betrifft, gelöscht. Das zuvor geschlossene
+                                    Vertragsverhältnis ist von dem Zeitpunkt der Abmeldung an beendet.
+                                </p>
+
+                                <p>
+                                    (2) Wer sein Profil missbraucht, um unter falscher Identität
+                                    aufzutreten, Irrtümer über die Person hervorzurufen, urherberrechtlich
+                                    geschützte Bilder verwendet, haftet zivil- und strafrechtlich für sein
+                                    Verhalten. Des Weiteren behält sich der Betreiber das Recht vor, in
+                                    einem solchen Fall das bestehende Vertragsverhältnis mit sofortiger
+                                    Wirkung aufzulösen.
+                                </p>
+
+                                <h3>§ 5 Haftung des Betreibers</h3>
+
+                                <p>
+                                    (1) Der Betreiber übernimmt keine Verantwortung für die Richtigkeit und
+                                    den Inhalt der Angaben in den Anmelde- bzw. Profildaten der Nutzer oder
+                                    für sonstige durch Nutzer bestimmte Inhalte. Der Betreiber übernimmt
+                                    keine Haftung für den eventuellen Missbrauch von Informationen.
+                                </p>
+
+                                <p>
+                                    (2) Der Betreiber lehnt jede Haftung für wirtschaftliche, körperliche
+                                    oder immaterielle Schäden ab, die sich aus der Nutzung von Großstadt Dinner ergeben
+                                    können.
+                                </p>
+
+                                <p>
+                                    (3) Der Betreiber ist bemüht, einen ordnungsgemäßen Betrieb des
+                                    Services sicherzustellen. Eine Garantie für ununterbrochene,
+                                    vollumfängliche Nutzbarkeit wird nicht übernommen.
+                                </p>
+
+                                <p>
+                                    (4) Für die Kenntniserlangung von Daten durch unbefugte Dritte haftet
+                                    der Betreiber nicht. Ebenso entfällt die Haftung bei dem Missbrauch von
+                                    Daten, die der Nutzer selbst Dritten zugänglich macht oder gemacht hat.
+                                </p>
+
+                                <p>
+                                    (5) Der Betreiber behält sich das Recht vor, den Inhalt jedweden Textes
+                                    sowie eingesandter Fotos bzw. Grafikdateien auf die Einhaltung von
+                                    Gesetz und Recht hin zu überprüfen und, wenn nötig, zu ändern (bei
+                                    Mitteilung an den Nutzer) oder zu löschen. Eine Verpflichtung
+                                    dahingehend wird nicht eingegangen.
+                                </p>
+
+                                <p>
+                                    (6) Der Betreiber ist jederzeit berechtigt, die Dienste von Großstadt Dinner mit oder
+                                    ohne Angabe von Gründen ganz oder teilweise einzustellen.
+                                </p>
+
+                                <h3>§ 6 Verantwortlichkeit und Pflichten des Nutzers</h3>
+
+                                <p>
+                                    (1) Für den Inhalt seiner Anmeldung und damit für die Informationen,
+                                    die er über sich bereitstellt, ist der Nutzer allein verantwortlich.
+                                    Der Nutzer versichert, dass die bei Großstadt Dinner angegebenen Daten der Wahrheit
+                                    entsprechen. Des weiteren versichert der Nutzer, dass er mit der
+                                    Nutzung von Großstadt Dinner keine gewerblichen Absichten verbindet und die ihm
+                                    anvertrauten Daten Dritter nicht zu kommerziellen Zwecken,
+                                    einschließlich Werbezwecken verwendet.
+                                </p>
+
+                                <p>
+                                    (2) Der Nutzer verpflichtet sich, den Betreiber schadlos von jeglicher
+                                    Art von Klagen, Schäden, Verlusten oder Forderungen zu halten, die
+                                    durch die Anmeldung des Nutzers und/oder seiner Teilnahme an diesem
+                                    Service entstehen könnten. Der Nutzer verpflichtet sich insbesondere,
+                                    den Betreiber von jeglicher Haftung und von allen Verpflichtungen,
+                                    Aufwendungen und Ansprüchen, die sich aus Schäden wegen Beleidigung,
+                                    übler Nachrede, Verletzung von Persönlichkeitsrechten, wegen des
+                                    Ausfalls von Dienstleistungen für andere Nutzer, wegen der Verletzung
+                                    von Immaterialgütern oder sonstiger Rechte ergeben, freizustellen. Die
+                                    Freistellungsverpflichtung bezieht sich auch auf die Kosten, die zur
+                                    Abwehr solcher Inanspruchnahme erforderlich sind.
+                                </p>
+
+                                <p>
+                                    (3) Der Nutzer verpflichtet sich zum vertraulichen Umgang
+                                    mit E-Mails und anderen Nachrichten. Eine Weitergabe an
+                                    Dritte ist nur mit ausdrücklicher vorheriger Zustimmung des Absenders erlaubt,
+                                    insbesondere in Bezug auf persönliche Telekommunations- und
+                                    Adressdaten.
+                                </p>
+
+                                <p>
+                                    (4) Ferner verpflichtet sich jeder Nutzer, den Service nicht
+                                    missbräuchlich zu nutzen, insbesondere:<br>
+                                    - ihn nicht zu benutzen, um andere Nutzer zu belästigen, zu bedrohen
+                                    oder die Rechte (einschließlich Persönlichkeitsrechte) Dritter zu
+                                    verletzen.<br>
+                                    - über ihn kein diffamierendes, anstößiges oder in sonstiger Weise
+                                    rechtswidriges Material oder solche Informationen zu verbreiten.
+                                    Insbesondere betrifft dies pornographische, rassistische,
+                                    volksverhetzende oder vergleichbare Inhalte, die gegen geltende Gesetze
+                                    und gegen die guten Sitten verstoßen.<br>
+                                    - keine Kettenbriefe, Schneeballsysteme oder Multi-Level-Marketing zu
+                                    betreiben oder in sonstiger Weise Werbung für gewerbliche Zwecke ohne
+                                    die vorherige ausdrückliche Zustimmung des Nutzers zu verbreiten.<br>
+                                    - keine Daten in das System einzubringen, die einen Computer-Virus
+                                    (infizierte Software) oder Software oder anderes Material enthalten,
+                                    welches urheberrechtlich geschützt ist, es sei denn, der Nutzer hat die
+                                    Rechte daran oder die erforderlichen Zustimmungen hierfür.<br>
+                                    - ihn nicht in einer Art und Weise zu benutzen, welche die
+                                    Verfügbarkeit der Angebote für andere Nutzer von Großstadt Dinner negativ beeinflusst.
+                                </p>
+
+                                <p>
+                                    (5) Sollte den unter Absatz 4 aufgeführten Pflichten nicht nachgekommen
+                                    werden, können für den Nutzer neben der sofortigen Kündigung zivil- und
+                                    strafrechtliche Konsequenzen die Folge sein. Der Betreiber behält sich
+                                    insbesondere das Recht vor, den Nutzer vom Service auszuschließen,
+                                    falls bei der Nutzung des Service oder bei der Anmeldung nach Ansicht
+                                    des Betreibers sittenwidrige oder sonstig anstößige oder verwerfliche
+                                    Inhalte verbreitet werden sollen.
+                                </p>
+
+                                <p>
+                                    (6) Falls der Nutzer die ihm anvertrauten Daten Dritter zu
+                                    kommerziellen Zwecken verwendet und/ oder mit seiner Anmeldung
+                                    geschäftliche Interessen verbindet, verpflichtet er sich, an den
+                                    Betreiber eine Vertragsstrafe in Höhe von EURO 5.000,00 für jede
+                                    nachgewiesene, schuldhafte Zuwiderhandlung zu zahlen. Hiervon bleiben
+                                    weitergehende Schadensersatzansprüche unberührt.
+                                </p>
+
+                                <h3>§ 7 Einbeziehung Dritter</h3>
+
+                                <p>
+                                    Der Betreiber ist berechtigt, Dritte mit der Erbringung von Teilen oder
+                                    des ganzen Leistungsspektrums zu beauftragen.
+                                </p>
+
+
+                                <h3>§ 8 Gerichtsstand und anwendbares Recht</h3>
+
+                                <p>
+                                    Soweit rechtlich zulässig, ist der Gerichtsstand Frankfurt am Main. Es gilt das
+                                    Recht der Bundesrepublik Deutschland unter Ausschluss des UN-Kaufrechts.
+                                </p>
+
+                                <h3>Widerrufsbelehrung</h3>
+
+                                <p>
+                                    Der Nutzer kann seine auf den Vertragsschluss gerichtete
+                                    Willenserklärung jederzeit, ohne Einhaltung einer Frist und ohne Angabe
+                                    von Gründen schriftlich oder per E-Mail gegenüber Großstadt Dinner widerrufen. Auf
+                                    dem Postwege ist der Widerruf an die unten aufgeführte Adresse zu
+                                    richten. Der Widerruf per E-Mail soll an admin@grossstadtdinner.de gerichtet
+                                    werden.
+                                </p>
+
+                                <p>
+                                    <b>Großstadt Dinner</b><br>
+                                    Eppsteiner Str. 27<br>
+                                    60323 Frankfurt am Main<br><br>
+                                    admin@grossstadtdinner.de
+                                </p>
+
+                            </div>
+
+                            <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                <i class="fas fa-times"></i>
+                                Schließen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+

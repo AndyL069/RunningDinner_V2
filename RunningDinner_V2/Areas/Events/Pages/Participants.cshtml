@@ -1,0 +1,55 @@
+﻿@page
+@model RunningDinner.Areas.Events.Pages.ParticipantsModel
+@using RunningDinner.Areas.Events.Views
+@{
+    ViewData["Title"] = "Teilnehmer";
+    ViewData.AddActivePage(EventNavPages.Participants);
+}
+
+<h4 class="text-uppercase page-header"><b>Teilnehmer (@Model.Participants.Count)</b></h4>
+<div class="row">
+    @{int cnt1 = 0; }
+    <div class="col-md-4 text-center bg-light">
+        @foreach (var user in Model.Participants)
+        {
+            // left column
+            if (cnt1 % 2 == 0)
+            {
+
+                @if (user.ProfilePicture != null)
+                {
+                    <img src="@user.ProfilePicture" class="avatar" /><p>@user.FirstName @user.LastName</p>
+                }
+                else
+                {
+                    <img src="~/img/profile-placeholder.png" class="avatar" /><p>@user.FirstName @user.LastName</p>
+                }
+
+            }
+            cnt1++;
+        }
+    </div>
+
+    @{int cnt2 = 0; }
+    <div class="col-md-4 text-center bg-light">
+        @foreach (var user in Model.Participants)
+        {
+            // right column
+            if (cnt2 % 2 != 0)
+            {
+                @if (user.ProfilePicture != null)
+                {
+                    <img src="@user.ProfilePicture" class="avatar" /><p>@user.FirstName @user.LastName</p>
+                }
+                else
+                {
+                    <img src="~/img/profile-placeholder.png" class="avatar" /><p>@user.FirstName @user.LastName</p>
+                }
+            }
+
+            cnt2++;
+        }
+    </div>
+    <div class="col-md-1 bg-light"></div>
+</div>
+

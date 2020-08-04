@@ -1,0 +1,29 @@
+﻿@using RunningDinner.Models.ViewModels
+@model HomeModel
+
+<!-- Newsletter Widget -->
+    <div class="row justify-content-center text-center bg-light">
+        <div class="col-lg-12">
+            <i class="far fa-paper-plane fa-2x mb-2" style="margin-top: 10px"></i>
+            <h2>Verpasse kein Event mit unserem Newsletter!</h2>
+        </div>
+        <div class="col-md-6 portfolio-item text-center">
+            <form id="signupForm" method="post" class="form-inline d-flex">
+                <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+                    <i class="material-icons mdc-text-field__icon">email</i>
+                    <input asp-for="Email" type="text" class="mdc-text-field__input" aria-labelledby="email-id">
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <span class="mdc-floating-label" id="email-id">E-Mail</span>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+            </form>
+            <div class="col-lg-12 text-center">
+                <div id="signupSuccess"></div>
+                <button id="sendSignupButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Anmelden</button>
+            </div>
+        </div>
+    </div>

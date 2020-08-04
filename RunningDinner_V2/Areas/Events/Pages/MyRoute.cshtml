@@ -1,0 +1,158 @@
+﻿@page
+@model RunningDinner.Areas.Events.Pages.MyRouteModel
+@using RunningDinner.Areas.Events.Views
+@{
+    ViewData["Title"] = "Meine Route";
+    ViewData.AddActivePage(EventNavPages.MyRoute);
+}
+
+@section Header {
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <link rel="stylesheet" href="~/css/map.css">
+    <script src="~/js/routeMap.js"></script>
+}
+
+<h4 class="text-uppercase page-header"><b>@ViewData["Title"]</b></h4>
+@if (Model.Event.RoutesOpen)
+{
+    <div class="row">
+        <div class="col-md-9 bg-light">
+            <p><i class="fas fa-clock"></i> Bitte achtet darauf pünktlich zu den Gängen zu erscheinen und ggfs. früher zu gehen wenn ihr euren eigenen Gang vorbereiten müsst. Sollte euch etwas dazwischenkommen gebt bitte dem Gastgeber unter der angegebenen Nummer Bescheid.</p>
+            <ul class="timeline">
+                <li>
+                    <div class="timeline-image-medium">
+                        <img class="rounded-circle img-fluid" src="~/img/spinach-soup.jpg" alt="">
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>17:30</h4>
+                            <h4 class="subheading">Vorspeise</h4>
+                            <p>@Model.FirstCourseTeam.Partner1?.FullName</p>
+                            <p>@Model.FirstCourseTeam.Partner2?.FullName</p>
+                            <p>@Model.FirstCourseTeam.FullAddress</p>
+                            @if (!string.IsNullOrEmpty(Model.FirstCourseTeam.AddressAdditions))
+                            {
+                                <p>@Model.FirstCourseTeam.AddressAdditions</p>
+                            }
+                            <p>@Model.FirstCourseTeam.Phone</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-inverted">
+                    <div class="timeline-image-medium">
+                        <img class="rounded-circle img-fluid" src="~/img/pizza-salami.jpg" alt="">
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>19:30</h4>
+                            <h4 class="subheading">Hauptgang</h4>
+                            <p>@Model.SecondCourseTeam.Partner1?.FullName</p>
+                            <p>@Model.SecondCourseTeam.Partner2?.FullName</p>
+                            <p>@Model.SecondCourseTeam.FullAddress</p>
+                            @if (!string.IsNullOrEmpty(Model.SecondCourseTeam.AddressAdditions))
+                            {
+                                <p>@Model.SecondCourseTeam.AddressAdditions</p>
+                            }
+                            <p>@Model.SecondCourseTeam.Phone</p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-image-medium">
+                        <img class="rounded-circle img-fluid" src="~/img/tiramisu.jpg" alt="">
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>21:30</h4>
+                            <h4 class="subheading">Nachtisch</h4>
+                            <p>@Model.ThirdCourseTeam.Partner1?.FullName</p>
+                            <p>@Model.ThirdCourseTeam.Partner2?.FullName</p>
+                            <p>@Model.ThirdCourseTeam.FullAddress</p>
+                            @if (!string.IsNullOrEmpty(Model.ThirdCourseTeam.AddressAdditions))
+                            {
+                                <p>@Model.ThirdCourseTeam.AddressAdditions</p>
+                            }
+                            <p>@Model.ThirdCourseTeam.Phone</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-inverted">
+                    <div class="timeline-image-medium">
+                        <img class="rounded-circle img-fluid" src="~/img/lemon-drinks.jpg" alt="">
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4>Ab 23:00</h4>
+                            <h4 class="subheading">After Party</h4>
+                            <p>Die After Party findet in folgender Location statt: </p>
+                            <p><b>@Model.Event.PartyLocationName, @Model.Event.PartyLocation</b></p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <h4 style="color: #212529"><i class="fas fa-hand-point-right"></i> Allergien & Unverträglichkeiten meiner Gäste</h4>
+            <ul>
+                @if (Model.FirstCourseTeam.Allergies != null || Model.SecondCourseTeam.Allergies != null || Model.ThirdCourseTeam.Allergies != null)
+                {
+                    if (!string.IsNullOrEmpty(Model.FirstCourseTeam.Allergies))
+                    {
+                        <li>@Model.FirstCourseTeam.Allergies</li>
+                    }
+
+                    if (!string.IsNullOrEmpty(Model.SecondCourseTeam.Allergies))
+                    {
+                        <li>@Model.SecondCourseTeam.Allergies</li>
+                    }
+
+                    if (!string.IsNullOrEmpty(Model.ThirdCourseTeam.Allergies))
+                    {
+                        <li>@Model.ThirdCourseTeam.Allergies</li>
+                    }
+                }
+
+                else
+                {
+                    <li>Keine Angaben</li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9 bg-light">
+            <div id="map-container" class="map">
+            </div>
+        </div>
+    </div>
+    @section Scripts {
+        <script type="text/javascript">
+            var mapCenterLat = @Html.Raw(Json.Serialize(ViewData["MapCenterLat"]));
+            var mapCenterLong = @Html.Raw(Json.Serialize(ViewData["MapCenterLong"]));
+            var routes = @Html.Raw(Json.Serialize(ViewData["RouteCoordinates"]));
+            var kitchen = @Html.Raw(Json.Serialize(ViewData["KitchenCoordinates"]));
+            var partyLocation = @Html.Raw(Json.Serialize(ViewData["PartyLocation"]));
+            var apiKey = @Html.Raw(Json.Serialize(ViewData["apiKey"]));
+            $(document).ready(
+                createRouteMap(mapCenterLat, mapCenterLong, kitchen, routes, partyLocation, apiKey)
+            );
+        </script>
+    }
+}
+
+else
+{
+    <div class="row">
+        <div class="col-md-9 bg-light">
+            <h4>Du wirst benachrichtigt, sobald die Routen erstellt sind.</h4>
+        </div>
+    </div>
+}
+
+
+

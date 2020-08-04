@@ -1,0 +1,150 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profildaten";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+    Layout = "~/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
+}
+
+@section Header {
+    <!-- Dropzone -->
+    <link rel="stylesheet" href="~/css/imageUpload.css">
+    <link rel="stylesheet" href="~/vendor/dropzone/dropzone.css">
+    <link rel="stylesheet" href="~/vendor/dropzone/basic.css">
+    <script src="~/vendor/dropzone/dropzone.js"></script>
+}
+
+
+<h4 class="text-uppercase page-header">@ViewData["Title"]</h4>
+<div class="row">
+    <div class="col-md-9">
+        <partial name="_StatusMessage" model="Model.StatusMessage" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9 bg-light">
+        <div class="col-md-9">
+            <div class="form-group">
+                @if (Model.Input.ProfilePicture != null)
+                {
+                    <span>
+                        <img src="@Model.Input.ProfilePicture" class="avatar" />
+                    </span>
+                }
+                else
+                {
+                    <span>
+                        <img src="~/img/profile-placeholder.png" class="avatar" />
+                    </span>
+                }
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary portfolio-link" type="button" data-toggle="modal" data-target="#uploadImageModal">Bild ändern</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9 bg-light">
+        <div class="col-md-9">
+            <form id="profile-form" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <b><label>Name</label></b>
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input asp-for="Input.FirstName" type="text" class="mdc-text-field__input" aria-labelledby="first-name-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="first-name-id">Vorname</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input asp-for="Input.LastName" type="text" class="mdc-text-field__input" aria-labelledby="last-name-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="last-name-id">Nachname</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+
+                <b><label asp-for="Input.SendEventNewsletter"></label></b>
+                <div class="form-group">
+                    <div class="mdc-switch" data-mdc-auto-init="MDCSwitch">
+                        <div class="mdc-switch__track"></div>
+                        <div class="mdc-switch__thumb-underlay">
+                            <div class="mdc-switch__thumb"></div>
+                            <input asp-for="Input.SendEventNewsletter" type="checkbox" id="event-newsletter-switch" class="mdc-switch__native-control" role="switch" aria-checked="false">
+                        </div>
+                    </div>
+                    <div><label for="event-newsletter-switch"> Ich möchte bei zukünftigen Events informiert werden</label></div>
+                </div>
+
+                <b><label asp-for="Input.ContactData"></label></b>
+                <div><label>Über diese Daten können andere Teilnehmer dich nach dem Event finden (Facebook, Xing, E-Mail, etc.) </label></div>
+                <div class="form-group">
+                    <div class="mdc-text-field mdc-text-field--textarea" data-mdc-auto-init="MDCTextField">
+                        <textarea asp-for="Input.ContactData" id="allergies-id" class="mdc-text-field__input" rows="3" cols="45"></textarea>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button id="update-profile-button" type="submit" class="btn btn-primary">Speichern</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Image Modal -->
+<div class="portfolio-modal modal fade" id="uploadImageModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto bg-light">
+                        <div class="modal-body">
+                            <h2 class="text-uppercase">Bild hochladen</h2>
+                            <div style="display: inline-block;">
+                                @await Html.PartialAsync("_UploadImagePartial")
+                                <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                    <i class="fas fa-times"></i>
+                                    Schließen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            mdc.autoInit();
+        });
+    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Http.Features
+
+@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var showBanner = !consentFeature?.CanTrack ?? false;
+    var cookieString = consentFeature?.CreateConsentCookie();
+}
+
+@if (showBanner)
+{
+    <nav id="cookieConsent" class="navbar navbar-default fixed-bottom bg-light" role="alert">
+        <div class="container">
+            <div class="navbar-collapse" style="text-align:center">
+                <p class="navbar-text">
+                    Cookies erleichtern die Bereitstellung unserer Dienste. Mit der Nutzung unserer Dienste erklärst du dich damit einverstanden, dass wir Cookies verwenden.
+                </p>
+                <div class="navbar-right">
+                    <a class="btn btn-outline-primary navbar-btn" data-toggle="modal" href="#privacyModal">Datenschutz</a>
+                    <button type="button" class="btn btn-primary navbar-btn" data-cookie-string="@cookieString">Akzeptieren</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <script>
+        (function () {
+            document.querySelector("#cookieConsent button[data-cookie-string]").addEventListener("click", function (el) {
+                document.cookie = el.target.dataset.cookieString;
+                $("#cookieConsent").hide();
+            }, false);
+        })();
+    </script>
+}

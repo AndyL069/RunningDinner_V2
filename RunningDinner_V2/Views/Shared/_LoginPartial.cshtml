@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using RunningDinner.Models.DatabaseModels
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    bool isSignedIn = SignInManager.IsSignedIn(User);
+    ApplicationUser user = null;
+    if (isSignedIn)
+    {
+        user = await UserManager.GetUserAsync(User);
+
+    }
+}
+
+@if (isSignedIn)
+{
+    <li class="nav-item text-nowrap">
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="nav-button nav-link btn btn-outline-primary" style="color: #1899B5; margin-right:5px">LOGOUT</button>
+        </form>
+    </li>
+    <li class="nav-item text-nowrap">
+        @if (user?.ProfilePicture != null)
+        {
+            <a class="btn btn-primary nav-button nav-link js-scroll-trigger" asp-area="Identity" asp-page="/Account/Manage/Index" title="Profildaten" style="color: white;"><img src="@user.ProfilePicture" class="avatar-small" /> Profil</a>
+        }
+        else
+        {
+            <a class="btn btn-primary nav-button nav-link js-scroll-trigger" asp-area="Identity" asp-page="/Account/Manage/Index" title="Profildaten" style="color: white;"><img src="~/img/profile-placeholder.png" class="avatar-small" /> Profil</a>            
+        }
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-button nav-link js-scroll-trigger text-nowrap btn btn-outline-primary" style="color: #1899B5;margin-right: 5px" id="loginLink" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+    <li class="nav-item">
+        <a class="btn btn-primary nav-button nav-link js-scroll-trigger text-nowrap" style="color: white;" id="registerLink" asp-area="Identity" asp-page="/Account/Register">Registrieren</a>
+    </li>
+}
+

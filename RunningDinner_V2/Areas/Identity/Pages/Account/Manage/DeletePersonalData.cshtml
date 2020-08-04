@@ -1,0 +1,52 @@
+﻿@page
+@model DeletePersonalDataModel
+@{
+    ViewData["Title"] = "Persönliche Daten löschen";
+    ViewData["ActivePage"] = ManageNavPages.PersonalData;
+}
+
+<h4 class="text-uppercase page-header">@ViewData["Title"]</h4>
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="alert alert-warning" role="alert">
+            <p>
+                <strong>Wenn du deine persönlichen Daten löschst, wird auch dein Benutzerkonto dauerhaft gelöscht, dies kann nicht rückgängig gemacht werden.</strong>
+            </p>
+        </div>
+    </div>
+ </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            <form id="delete-user" method="post" class="form-group">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                @if (Model.RequirePassword)
+                {
+                    <div class="form-group">
+                        <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                            <input asp-for="Input.Password" type="password" class="mdc-text-field__input" aria-labelledby="password-id">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <span class="mdc-floating-label" id="password-id">Passwort</span>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+                }
+                <button class="btn btn-danger" type="submit">Persönliche Daten löschen und mein Benutzerkonto schließen</button>
+            </form>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script type="text/javascript">
+            $(document).ready(function () {
+                mdc.autoInit();
+            });
+        </script>
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+    }

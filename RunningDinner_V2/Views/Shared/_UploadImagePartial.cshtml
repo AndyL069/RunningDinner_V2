@@ -1,0 +1,23 @@
+﻿
+        <div class="form-group">
+            <form asp-controller="images" asp-action="upload"
+                  class="dropzone needsclick dz-clickable"
+                  id="image-upload"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="dz-message needsclick">
+                    <span class="note needsclick">
+                        Neues Bild hier hereinziehen oder hier klicken zum Hochladen.
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="form-group">
+            <a class="btn btn-primary" asp-page-handler="SaveImage">Speichern</a>
+        </div>     
+
+
+
+
+

@@ -1,0 +1,65 @@
+﻿@using RunningDinner.Areas.Events.Views
+@{
+    ViewData["Title"] = "Einzugsgebiet";
+    ViewData.AddActivePage(EventNavPages.EventMap);
+}
+
+<body id="markers-on-the-map">
+    <div class="page-header">
+        <h1>Map at a specified location</h1>
+        <p>Display a map at a specified location and zoom level</p>
+    </div>
+    <p>This example displays a movable map initially centered on the <b>Brandenburg Gate</b> in the centre of Berlin <i>(52.5159°N, 13.3777°E)</i></p>
+    <div id="map-container"></div>
+    <script type="text/javascript">
+        var mapCenterLat = @Html.Raw(Json.Serialize(ViewData["MapCenterLat"]));
+        var mapCenterLong = @Html.Raw(Json.Serialize(ViewData["MapCenterLong"]));
+        $(document).ready(
+            createMap(mapCenterLat, mapCenterLong)
+        );
+    </script>
+</body>
+
+
+@*<h4 class="text-uppercase page-header"><b>@ViewData["Title"]</b></h4>
+    <div class="row">
+        <div class="col-md-9 bg-light">
+            <div id="map-container" class="map">
+            </div>
+        </div>
+    </div>
+
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+    <link rel="stylesheet" href="~/css/map.css">
+    <script type="text/javascript" href="~/vendor/require.js"></script>
+    <script type="text/javascript" src="~/js/map.js"></script>
+    <script type="text/javascript">
+        $.getScript("https://js.api.here.com/v3/3.0/mapsjs-core.js", function() {
+        console.log('Load was performed.');
+        });
+
+        $.getScript("https://js.api.here.com/v3/3.0/mapsjs-service.js", function() {
+        console.log('Load was performed.');
+        });
+
+        $.getScript("https://js.api.here.com/v3/3.0/mapsjs-ui.js", function() {
+        console.log('Load was performed.');
+        });
+
+        $.getScript("https://js.api.here.com/v3/3.0/mapsjs-mapevents.js", function() {
+        console.log('Load was performed.');
+        });
+
+        var mapCenterLat = @Html.Raw(Json.Serialize(ViewData["MapCenterLat"]));
+        var mapCenterLong = @Html.Raw(Json.Serialize(ViewData["MapCenterLong"]));
+        var appId = @Html.Raw(Json.Serialize(ViewData["AppId"]));
+        var appCode = @Html.Raw(Json.Serialize(ViewData["AppCode"]));
+
+        define(["dependency1","dependency2","source1","source2"], function() {
+             $(document).ready(
+                
+            );
+        );
+
+    </script>*@

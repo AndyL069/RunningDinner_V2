@@ -1,0 +1,164 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Registrieren";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <section class="page-section2">
+            @{
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                    <div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <p>
+                            @foreach (var provider in Model.ExternalLogins)
+                            {
+                                if (provider.Name == "Facebook")
+                                {
+                                    <button type="submit" class="btn btn-block btn-social btn-facebook text-center" name="provider" value="@provider.Name" title="Mit Facebook registrieren"><span class="fab fa-facebook-f"></span> Mit Facebook registrieren</button>
+                                }
+
+                                else if (provider.Name == "Google")
+                                {
+                                    <button type="submit" class="btn btn-block btn-social btn-google text-center" name="provider" value="@provider.Name" title="Mit Google registrieren"><span class="fab fa-google"></span> Mit Google registrieren</button>
+                                }
+                            }
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" asp-for="Input.AcceptTerms" id="acceptTermsTop" data-rule-required="true" data-msg-required="Bitte stimme den allgemeinen Geschäftsbedingungen zu, um fortzusetzen" />
+                                Ich stimme hiermit den <a data-toggle="modal" href="#agbModal">Nutzungsbedingungen</a> von Großstadt Dinner zu
+                            </label>
+                            <span asp-validation-for="Input.AcceptTerms" class="text-danger js-errors"></span>
+                        </div>
+                        <p>
+                            Wenn du mehr darüber erfahren möchtest, wie Großstadt Dinner personenbezogene Daten erhebt, verwendet, weitergibt und schützt, lies bitte die <a data-toggle="modal" href="#privacyModal">Datenschutzerklärung</a> von Großstadt Dinner
+                        </p>
+                    </div>
+                </form>
+            }
+            <div class="form-group">
+                <strong class="separator">ODER</strong>
+            </div>
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div class="form-group text-center">
+                    <h4>Registriere dich mit deiner Emailadresse</h4>
+                </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input asp-for="Input.FirstName" type="text" class="mdc-text-field__input" aria-labelledby="first-name-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="team-partner1-first-name-id">Vorname</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input asp-for="Input.LastName" type="text" class="mdc-text-field__input" aria-labelledby="last-name-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="partner-last-name-id">Nachname</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+                        <i class="material-icons mdc-text-field__icon">email</i>
+                        <input asp-for="Input.Email" type="text" class="mdc-text-field__input" aria-labelledby="email-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="email-id">E-Mail</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+                        <i class="material-icons mdc-text-field__icon">email</i>
+                        <input asp-for="Input.ConfirmEmail" type="text" class="mdc-text-field__input" aria-labelledby="confirm-email-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="confirm-email-id">E-Mail bestätigen</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Input.ConfirmEmail" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input asp-for="Input.Password" type="password" class="mdc-text-field__input" aria-labelledby="password-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="password-id">Passwort</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="Input.SendEventNewsletter" />
+                            Bitte sendet mir Infos zu neuen Events von Großstadt Dinner zu
+                        </label>
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="Input.AcceptTerms" id="acceptTermsBottom" data-rule-required="true" data-msg-required="Bitte stimme den allgemeinen Geschäftsbedingungen zu, um fortzusetzen" />
+                            Ich stimme hiermit den <a data-toggle="modal" href="#agbModal">Nutzungsbedingungen</a> von Großstadt Dinner zu
+                        </label>
+                    </div>
+                    <p>
+                        Wenn du mehr darüber erfahren möchtest, wie Großstadt Dinner personenbezogene Daten erhebt, verwendet, weitergibt und schützt, lies bitte die <a data-toggle="modal" href="#privacyModal">Datenschutzerklärung</a> von Großstadt Dinner
+                    </p>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary align-self-sm-center">Registrieren</button>
+                </div>
+
+            </form>
+            <div class="form-group text-center">
+                <p>
+                    Du hast bereits ein Konto? <a asp-page="./Login">Anmelden</a>
+                </p>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            mdc.autoInit();
+        });
+    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

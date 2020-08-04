@@ -1,0 +1,356 @@
+﻿@page
+@using RunningDinner.Models.DatabaseModels
+@using RunningDinner.Areas.Events.Views
+@using Microsoft.AspNetCore.Identity
+@model RunningDinner.Areas.Events.Pages.RegistrationDataViewModel
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Anmeldedaten";
+    ViewData.AddActivePage(EventNavPages.Index);
+    var user = await UserManager.GetUserAsync(User);
+    int teamId = -1;
+    string eventId = ViewData["EventId"].ToString();
+    if (Model.Team != null)
+    {
+        teamId = Model.Team.Id;
+    }
+}
+
+<h4 class="text-uppercase page-header"><b>@ViewData["Title"]</b></h4>
+<div class="row">
+    <div class="col-md-9">
+        @await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9 bg-light">
+        <div class="col-md-9">
+            <form id="registerForm" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                @if (Model.Team != null)
+                {
+                    <h4><b>Team @Model.Team.Id</b></h4>
+                }
+                <b><label>Eigene Daten (können im <a asp-area="Identity" asp-page="/Account/Manage/Index">Profil</a> geändert werden)</label></b>
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input readonly asp-for="Input.FirstName" type="text" class="mdc-text-field__input" aria-labelledby="first-name-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="team-partner1-first-name-id">Vorname</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input readonly asp-for="Input.LastName" type="text" class="mdc-text-field__input" aria-labelledby="last-name-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="partner-last-name-id">Nachname</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+                        <i class="material-icons mdc-text-field__icon">email</i>
+                        <input readonly asp-for="Input.Email" type="text" class="mdc-text-field__input" aria-labelledby="email-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="email-id">E-Mail</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                @if (Model.Team != null)
+                {
+                    <b><label>Partner (bestätigt)</label></b>
+                }
+                else
+                {
+                    <b><label>Partner (wird unter der angegebenen E-Mail automatisch eingeladen)</label></b>
+                }
+
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        @if (Model.Team != null)
+                        {
+                            <input readonly asp-for="Input.PartnerFirstName" type="text" class="mdc-text-field__input" aria-labelledby="partner-first-name-id">
+                        }
+                        else
+                        {
+                            <input asp-for="Input.PartnerFirstName" type="text" class="mdc-text-field__input" aria-labelledby="partner-first-name-id">
+                        }
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="partner-first-name-id">Vorname</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.PartnerFirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        @if (Model.Team != null)
+                        {
+                            <input readonly asp-for="Input.PartnerLastName" type="text" class="mdc-text-field__input" aria-labelledby="partner-last-name-id">
+                        }
+                        else
+                        {
+                            <input asp-for="Input.PartnerLastName" type="text" class="mdc-text-field__input" aria-labelledby="partner-last-name-id">
+                        }
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="partner-last-name-id">Nachname</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.PartnerLastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+                        <i class="material-icons mdc-text-field__icon">email</i>
+                        @if (Model.Team != null)
+                        {
+                            <input readonly asp-for="Input.PartnerEmail" type="text" class="mdc-text-field__input" aria-labelledby="partner-email-id">
+                        }
+                        else
+                        {
+                            <input asp-for="Input.PartnerEmail" type="text" class="mdc-text-field__input" aria-labelledby="partner-email-id">
+                        }
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="partner-email-id">E-Mail</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Input.PartnerEmail" class="text-danger"></span>
+                </div>
+
+                <p><b>Küche (Bitte stellt sicher, dass sich eure Küche im <a asp-area="Events" asp-page="EventMap" target="_blank">Einzugsgebiet</a> dieses Events befindet)</b></p>
+                <div class="form-row">
+                    <div class="form-group col-sm-9">
+                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+                            <i class="material-icons mdc-text-field__icon">home</i>
+                            <input asp-for="Input.AddressStreet" type="text" class="mdc-text-field__input" aria-labelledby="address-id">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <span class="mdc-floating-label" id="address-id">Straße</span>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Input.AddressStreet" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                            <input asp-for="Input.AddressNumber" type="text" class="mdc-text-field__input" aria-labelledby="address-number-id">
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <span class="mdc-floating-label" id="address-number-id">Nummer</span>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </label>
+                        <span asp-validation-for="Input.AddressNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input readonly asp-for="Event.City" type="text" class="mdc-text-field__input" aria-labelledby="city-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="team-city-label-id">Stadt</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                </div>
+
+                <b><label>Adresszusatz (Stockwerk, etc.)</label></b>
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input asp-for="Input.AddressAdditions" type="text" class="mdc-text-field__input" aria-labelledby="address-additions-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.AddressAdditions" class="text-danger"></span>
+                </div>
+
+                <b><label asp-for="Input.Phone"></label></b>
+                <div class="form-group">
+                    <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+                        <i class="material-icons mdc-text-field__icon">phone</i>
+                        <input asp-for="Input.Phone" type="text" class="mdc-text-field__input" aria-labelledby="phone-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="phone-id">Telefon</span>
+                            </div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Input.Phone" class="text-danger"></span>
+                </div>
+
+                <b><label asp-for="Input.SelectedCourse"></label></b>
+                <div class="form-group">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-primary @( Model.Input.SelectedCourse == "FirstCourse" ? "active" : "" )">
+                            @Html.RadioButtonFor(model => model.Input.SelectedCourse, "FirstCourse", new { id = "FirstCourse" }) Vorspeise
+                        </label>
+                        <label class="btn btn-outline-primary @( Model.Input.SelectedCourse == "SecondCourse" ? "active" : "" )">
+                            @Html.RadioButtonFor(model => model.Input.SelectedCourse, "SecondCourse", new { id = "SecondCourse" }) Hauptgang
+                        </label>
+                        <label class="btn btn-outline-primary @( Model.Input.SelectedCourse == "ThirdCourse" ? "active" : "" )">
+                            @Html.RadioButtonFor(model => model.Input.SelectedCourse, "ThirdCourse", new { id = "ThirdCourse" }) Nachtisch
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <span asp-validation-for="Input.SelectedCourse" class="text-danger"></span>
+                </div>
+
+                <b><label asp-for="Input.Allergies"></label></b>
+                <div class="form-group">
+                    <div class="mdc-text-field mdc-text-field--textarea" data-mdc-auto-init="MDCTextField">
+                        <textarea asp-for="Input.Allergies" id="allergies-id" class="mdc-text-field__input" rows="3" cols="45"></textarea>
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <b><label asp-for="Input.DinnerSaver"></label></b>
+                <div class="form-group">
+                    <div class="mdc-switch" data-mdc-auto-init="MDCSwitch">
+                        <div class="mdc-switch__track"></div>
+                        <div class="mdc-switch__thumb-underlay">
+                            <div class="mdc-switch__thumb"></div>
+                            <input asp-for="Input.DinnerSaver" type="checkbox" id="dinner-saver-switch" class="mdc-switch__native-control" role="switch" aria-checked="false">
+                        </div>
+                    </div>
+                    <div><label for="dinner-saver-switch"> Wir können bei einem Ausfall ein weiteres Team aufnehmen</label></div>
+                </div>
+
+                <div class="form-group">
+                    @if (Model.IsParticipating)
+                    {
+                        <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#unregisterModal">Vom Event abmelden</button>
+                        @if (Model.Team == null)
+                        {
+                            <form asp-page-handler="SendPartnerInvitation" method="post">
+                                <button class="btn btn-primary" style="margin-top:5px"><i class="fas fa-envelope"></i> Partner einladen</button>
+                                <input type="hidden" name="eventId" value=@eventId />
+                                <input type="hidden" name="partnerFirstName" value=@Model.Input.PartnerFirstName />
+                                <input type="hidden" name="partnerLastName" value=@Model.Input.PartnerLastName />
+                                <input type="hidden" name="partnerEmail" value=@Model.Input.PartnerEmail />
+                            </form>
+                        }
+                        <button type="submit" class="btn btn-primary">Speichern</button>
+                    }
+                    else
+                    {
+                        <button type="button" onclick="register()" class="btn btn-primary">Zum Event Anmelden</button>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>Bitte vor der Anmeldung beachten</h4>
+                <p><b><i class="fas fa-exclamation-circle"></i> Die Anmeldung ist verbindlich</b></p>
+                <p>
+                    Aufgrund der umfangreichen Planung die nötig ist um ein Großstadt Dinner durchzuführen, möchten wir dich bitten dich nur anzumelden, wenn
+                    du auch wirklich am Tag des Events Zeit hast.
+                </p>
+                <p>
+                    Falls du später doch nicht teilnehmen kannst, melde dich bitte bis <b>spätestens eine Woche vor dem Event</b> ab.
+                </p>
+                <p>
+                    In ungünstigen Fällen kann es passieren, dass ein Team trotz Anmeldung nicht teilnehmen kann, wenn die Teilnehmerzahl nicht aufgeht.
+                </p>
+                <p><b><i class="fas fa-file-signature"></i> Nutzungsbedingungen</b></p>
+                <p>Mit der Anmeldung zu diesem Event bestätigst du, dass du unsere <a class="portfolio-link" data-toggle="modal" href="#agbModal">Nutzungsbedingungen</a> und unsere <a class="portfolio-link" data-toggle="modal" href="#privacyModal">Datenschutzerklärung</a> anerkennst.</p>
+                <p>Für weitere Fragen schaue bitte auch in unsere <a class="portfolio-link" data-toggle="modal" href="#faqModal">FAQ Seite.</a></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                <button type="button" onclick="submitForm()" class="btn btn-primary">Anmelden</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Unregister Modal -->
+<div class="modal fade" id="unregisterModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Bist du sicher?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Hiermit meldest du dich/dein Team vom Event ab. Alle gespeicherten Anmeldedaten zu diesem Event werden gelöscht.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                <a class="btn btn-danger" asp-page-handler="EventUnregister">Abmelden</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            mdc.autoInit();
+        });
+        function register() {
+            $.validator.unobtrusive.parse($('#registerForm'))
+            var valid = $('#registerForm').valid()
+            if (valid) {
+                $('#registerModal').modal('show');
+            }
+        }
+        function submitForm() {
+            $("#registerForm").submit();
+        }
+    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+

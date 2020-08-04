@@ -1,0 +1,41 @@
+﻿@page
+@model RunningDinner.Areas.Events.Pages.KitchenMapModel
+@using RunningDinner.Areas.Events.Views
+@{
+    ViewData["Title"] = "Küchenkarte";
+    ViewData.AddActivePage(EventNavPages.KitchenMap);
+}
+
+@section Header {
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-core.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-service.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <link rel="stylesheet" href="~/css/map.css">
+    <script src="~/js/kitchenMap.js"></script>
+}
+
+<h4 class="text-uppercase page-header">@ViewData["Title"]</h4>
+<div class="row">
+    <div class="col-md-9 bg-light">
+        <div id="map-container" class="map">
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var mapCenterLat = @Html.Raw(Json.Serialize(ViewData["MapCenterLat"]));
+        var mapCenterLong = @Html.Raw(Json.Serialize(ViewData["MapCenterLong"]));
+        var routes = @Html.Raw(Json.Serialize(ViewData["RouteCoordinates"]));
+        var kitchen = @Html.Raw(Json.Serialize(ViewData["KitchenCoordinates"]));
+        var partyLocation = @Html.Raw(Json.Serialize(ViewData["PartyLocation"]));
+        var apiKey = @Html.Raw(Json.Serialize(ViewData["apiKey"]));
+        $(document).ready(
+                createKitchenMap(mapCenterLat, mapCenterLong, kitchen, routes, partyLocation, apiKey)
+        );
+    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

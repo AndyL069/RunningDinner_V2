@@ -1,0 +1,120 @@
+﻿@page
+@model CreateEventViewModel
+@{
+    ViewData["Title"] = "Event erstellen";
+    ViewData["ActivePage"] = ManageNavPages.CreateEvent;
+    Layout = "~/Areas/Identity/Pages/Account/Manage/_Layout.cshtml";
+}
+
+<h4 class="text-uppercase page-header">@ViewData["Title"]</h4>
+<div class="row">
+    <div class="col-md-9">
+        <partial name="_StatusMessage" model="Model.StatusMessage" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-9 bg-light">
+        <div class="col-md-9">
+            <form id="create-event-form" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <b><label asp-for="Input.EventName" style="margin-bottom: 0;"></label></b>
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input asp-for="Input.EventName" type="text" class="mdc-text-field__input" aria-labelledby="event-name-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.EventName" class="text-danger"></span>
+                </div>
+
+                <b><label asp-for="Input.City" style="margin-bottom: 0;"></label></b>
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input asp-for="Input.City" type="text" class="mdc-text-field__input" aria-labelledby="event-city-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.City" class="text-danger"></span>
+                </div>
+
+                <b><label asp-for="Input.EventDate" style="margin-bottom: 0;"></label></b>
+                <div class="form-group">
+                    <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+                        <i class="material-icons mdc-text-field__icon">date_range</i>
+                        <input asp-for="Input.EventDate" type="text" class="mdc-text-field__input" id="eventDatePicker" aria-labelledby="event-date-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                        <span asp-validation-for="Input.EventDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <b><label asp-for="Input.LastRegisterDate" style="margin-bottom: 0;"></label></b>
+                <div class="form-group">
+                    <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" data-mdc-auto-init="MDCTextField">
+                        <i class="material-icons mdc-text-field__icon">date_range</i>
+                        <input asp-for="Input.LastRegisterDate" type="text" class="mdc-text-field__input" id="lastRegisterDatePicker" aria-labelledby="last-register-date-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Input.LastRegisterDate" class="text-danger"></span>
+                </div>
+
+                <b><label asp-for="Input.PartyLocationName" style="margin-bottom: 0;"></label></b>
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input id="lastRegisterDatePicker" asp-for="Input.PartyLocationName" type="text" class="mdc-text-field__input" aria-labelledby="party-location-name-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.PartyLocationName" class="text-danger"></span>
+                </div>
+
+                <b><label asp-for="Input.PartyLocation" style="margin-bottom: 0;"></label></b>
+                <div class="form-group">
+                    <label class="mdc-text-field mdc-text-field--outlined" data-mdc-auto-init="MDCTextField">
+                        <input asp-for="Input.PartyLocation" type="text" class="mdc-text-field__input" aria-labelledby="party-location-id">
+                        <div class="mdc-notched-outline">
+                            <div class="mdc-notched-outline__leading"></div>
+                            <div class="mdc-notched-outline__trailing"></div>
+                        </div>
+                    </label>
+                    <span asp-validation-for="Input.PartyLocation" class="text-danger"></span>
+                </div>
+
+                <b><label asp-for="Input.EventPictureLink" style="margin-bottom: 0;"></label></b>
+                <div class="form-group">
+                    <div class="form-group">
+                        <select asp-for="Input.EventPictureLink" class="form-control" asp-items="Model.Images"></select>
+                    </div>
+                    <span asp-validation-for="Input.EventPictureLink" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary form-group">Event erstellen</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            mdc.autoInit();
+            $('#eventDatePicker').datepicker({
+                dateFormat: "dd.mm.yy"
+            }).datepicker("setDate", new Date());
+            $('#lastRegisterDatePicker').datepicker({
+                dateFormat: "dd.mm.yy"
+            }).datepicker("setDate", new Date());
+        });
+    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

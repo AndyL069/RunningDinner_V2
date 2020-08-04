@@ -1,0 +1,47 @@
+﻿@page
+@model RunningDinner.Areas.Events.Pages.TeamsModel
+@using RunningDinner.Areas.Events.Views
+
+@{
+    ViewData["Title"] = "Teams";
+    ViewData.AddActivePage(EventNavPages.Teams);
+}
+
+<h4 class="text-uppercase page-header"><b>Teams (@Model.Teams.Count)</b></h4>
+
+@foreach (var team in Model.Teams)
+{
+    <div class="row">
+        <div class="col-md-2 text-center bg-light">
+            @if (team.Id != -1)
+            {
+                <h4><b>Team @team.Id</b> </h4>
+                <p>@team.AddressStreet @team.AddressNumber</p>
+                <p>@team.Phone</p>
+                <p>@team.SelectedCourse</p>
+            }
+        </div>
+        <div class="col-md-4 text-center bg-light">
+            @if (team.Partner1.ProfilePicture != null)
+            {
+                <img src="@team.Partner1.ProfilePicture" class="avatar" /><p>@team.Partner1.FirstName @team.Partner1.LastName</p>
+            }
+            else
+            {
+                <img src="~/img/profile-placeholder.png" class="avatar" /><p>@team.Partner1.FirstName @team.Partner1.LastName</p>
+            }
+        </div>
+        <div class="col-md-4 text-center bg-light">
+            @if (team.Partner2.ProfilePicture != null)
+            {
+                <img src="@team.Partner2.ProfilePicture" class="avatar" /><p>@team.Partner2.FirstName @team.Partner2.LastName</p>
+            }
+            else
+            {
+                <img src="~/img/profile-placeholder.png" class="avatar" /><p>@team.Partner2.FirstName @team.Partner2.LastName</p>
+            }
+        </div>
+    </div>
+}
+
+

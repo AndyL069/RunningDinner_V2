@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Http
+@using RunningDinner.Models.DatabaseModels
+@using Microsoft.AspNetCore.Identity
+@using RunningDinner.Areas.Events.Views
+@inject UserManager<ApplicationUser> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    bool isAdmin = User.IsInRole("Administrator");
+    bool isParticipating = ViewData["IsParticipating"]?.ToString() == "True";
+}
+
+    <select class="form-control" id="eventNavCompact" onchange="doNavigate()">
+        <option value="@Url.Page("RegistrationData")" selected="@(ViewData["ActivePage"].ToString() == "RegistrationData" ? true : false)" style="font-weight:bold">Anmeldedaten</option>
+        <option value="@Url.Page("EventMap")" selected="@(ViewData["ActivePage"].ToString() == "EventMap" ? true : false)" style="font-weight:bold">Einzugsgebiet</option>
+        <option value="@Url.Page("Participants")" selected="@(ViewData["ActivePage"].ToString() == "Participants" ? true : false)" style="font-weight:bold">Teilnehmer</option>
+        @if (isParticipating)
+        {
+            <option value="@Url.Page("MyRoute")" selected="@(ViewData["ActivePage"].ToString() == "MyRoute" ? true : false)" style="font-weight:bold">Meine Route</option>
+        }
+        @if (isAdmin)
+        {
+            <option value="@Url.Page("Settings")" selected="@(ViewData["ActivePage"].ToString() == "Settings" ? true : false)" style="color:#1899B5; font-weight:bold">Einstellungen</option>
+            <option value="@Url.Page("Teams")" selected="@(ViewData["ActivePage"].ToString() == "Teams" ? true : false)" style="color:#1899B5; font-weight:bold">Teams</option>
+            <option value="@Url.Page("Routes")" selected="@(ViewData["ActivePage"].ToString() == "Routes" ? true : false)" style="color:#1899B5; font-weight:bold">Routen</option>
+            <option value="@Url.Page("KitchenMap")" selected="@(ViewData["ActivePage"].ToString() == "KitchenMap" ? true : false)" style="color:#1899B5; font-weight:bold">Küchenkarte</option>
+        }
+    </select>
+
+<div class="image-container">
+    <img class="img-fluid" src="@ViewData["EventPictureLink"]" />
+    <div class="centered-image-text">@ViewData["EventDate"]</div>
+</div>
+
+<ul class="nav nav-pills flex-column vertical-nav" id="eventNav">
+    <li class="nav-item text-uppercase @EventNavPages.IndexNavClass(ViewContext)"><a asp-page="RegistrationData" class="nav-link @(ViewData["ActivePage"].ToString() == "Index" ? "active" : "")"><h6><i class="fas fa-sign-in-alt"></i> Anmeldedaten</h6></a></li>
+    <li class="nav-item text-uppercase @EventNavPages.EventMapNavClass(ViewContext)"><a asp-page="EventMap" class="nav-link @(ViewData["ActivePage"].ToString() == "EventMap" ? "active" : "")"><h6><i class="fas fa-map"></i> Einzugsgebiet</h6></a></li>
+    <li class="nav-item text-uppercase @EventNavPages.ParticipantsNavClass(ViewContext)"><a asp-page="Participants" class="nav-link @(ViewData["ActivePage"].ToString() == "Participants" ? "active" : "")"><h6><i class="fas fa-users"></i> Teilnehmer</h6></a></li>
+    @if (isParticipating)
+    {
+        <li class="nav-item text-uppercase @EventNavPages.MyRouteNavClass(ViewContext)"><a asp-page="MyRoute" class="nav-link @(ViewData["ActivePage"].ToString() == "MyRoute" ? "active" : "")"><h6><i class="fas fa-route"></i> Meine Route</h6></a></li>
+    }
+
+    @if (isAdmin)
+    {
+        <li class="nav-item text-uppercase text-center"><h6 style="color:#1899B5;margin-bottom:0;">Admin Settings</h6></li>
+        <li class="nav-item text-uppercase @EventNavPages.SettingsNavClass(ViewContext)"><a asp-page="Settings" class="nav-link @(ViewData["ActivePage"].ToString() == "Settings" ? "active" : "")"><h6><i class="fas fa-wrench"></i> Einstellungen</h6></a></li>
+        <li class="nav-item text-uppercase @EventNavPages.TeamsNavClass(ViewContext)"><a asp-page="Teams" class="nav-link @(ViewData["ActivePage"].ToString() == "Teams" ? "active" : "")"><h6><i class="fas fa-users"></i> Teams</h6></a></li>
+        <li class="nav-item text-uppercase @EventNavPages.RoutesNavClass(ViewContext)"><a asp-page="Routes" class="nav-link @(ViewData["ActivePage"].ToString() == "Routes" ? "active" : "")"><h6><i class="fas fa-route"></i> Routen</h6></a></li>
+        <li class="nav-item text-uppercase @EventNavPages.KitchenMapNavClass(ViewContext)"><a asp-page="KitchenMap" class="nav-link @(ViewData["ActivePage"].ToString() == "KitchenMap" ? "active" : "")"><h6><i class="fas fa-map-marked-alt"></i> Küchenkarte</h6></a></li>
+    }
+</ul>
+
+<script>
+    function doNavigate() {
+        var navigationValue = document.getElementById("eventNavCompact").value;
+        window.location.href = navigationValue;
+    }
+</script>

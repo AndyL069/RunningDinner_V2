@@ -1,0 +1,44 @@
+﻿@using RunningDinner.Models.DatabaseModels
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+    bool isAdmin = User.IsInRole("Administrator");
+}
+
+<select class="form-control" id="manageNavCompact" onchange="doNavigate()">
+    <option value="@Url.Page("./Index")" selected="@(ViewData["ActivePage"].ToString() == "Index" ? true : false)" style="font-weight:bold">Profildaten</option>
+    <option value="@Url.Page("./Email")" selected="@(ViewData["ActivePage"].ToString() == "Email" ? true : false)" style="font-weight:bold">E-Mail</option>
+    <option value="@Url.Page("./ChangePassword")" selected="@(ViewData["ActivePage"].ToString() == "ChangePassword" ? true : false)" style="font-weight:bold">Passwort</option>
+    @if (hasExternalLogins)
+    {
+    <option value="@Url.Page("./ExternalLogins")" selected="@(ViewData["ActivePage"].ToString() == "ExternalLogins" ? true : false)" style="font-weight:bold">Externe Logins</option>
+    }
+    <option value="@Url.Page("./PersonalData")" selected="@(ViewData["ActivePage"].ToString() == "PersonalData" ? true : false)" style="font-weight:bold">Persönliche Daten</option>
+    @if (isAdmin)
+    {
+    <option value="@Url.Page("./CreateEvent")" selected="@(ViewData["ActivePage"].ToString() == "CreateEvent" ? true : false)" style="color:#1899B5; font-weight:bold">Event erstellen</option>
+    }
+</select>
+
+<ul class="nav nav-pills flex-column vertical-nav" id="manageNav">
+    <li class="nav-item text-uppercase"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index"><h6><i class="fas fa-address-card"></i> Profildaten</h6></a></li>
+    <li class="nav-item text-uppercase"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email"><h6><i class="fas fa-envelope"></i> E-Mail</h6></a></li>
+    <li class="nav-item text-uppercase"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword"><h6><i class="fas fa-key"></i> Passwort</h6></a></li>
+    @if (hasExternalLogins)
+    {
+        <li id="external-logins" class="nav-item text-uppercase"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins"><h6><i class="fab fa-facebook-square"></i> Externe Logins</h6></a></li>
+    }
+    <li class="nav-item text-uppercase"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData"><h6><i class="fas fa-user-shield"></i> Persönliche Daten</h6></a></li>
+    @if (isAdmin)
+    {
+        <li class="nav-item text-uppercase text-center"><h6 style="color:#1899B5;margin-bottom:0;">Admin Settings</h6></li>
+        <li class="nav-item text-uppercase"><a class="nav-link @ManageNavPages.CreateEventNavClass(ViewContext)" id="createEvent" asp-page="./CreateEvent"><h6><i class="fas fa-calendar-week"></i> Event erstellen</h6></a></li>
+    }
+</ul>
+
+<script>
+    function doNavigate() {
+        var navigationValue = document.getElementById("manageNavCompact").value;
+        window.location.href = navigationValue;
+    }
+</script>

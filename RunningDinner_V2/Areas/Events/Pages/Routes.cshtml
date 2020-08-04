@@ -1,0 +1,213 @@
+﻿@page
+@using RunningDinner.Areas.Events.Views
+@model RunningDinner.Areas.Events.Pages.RoutesModel
+
+@{
+    ViewData["Title"] = "Routen";
+    var eventId = ViewData["EventId"]?.ToString();
+    ViewData.AddActivePage(EventNavPages.Routes);
+}
+
+<h4 class="text-uppercase page-header"><b>@ViewData["Title"] (@Model.Routes.Count)</b></h4>
+<div class="col-md-9 bg-light">
+    @foreach (var route in Model.Routes)
+    {
+        <form method="post">
+            <div class="container bg-light">
+                <div class="row">
+                    <div class="col-sm">
+                        <p><h4>Route @route.Id</h4><select asp-for="@route.RouteForTeam.Id" class="form-control" asp-items="@Model.Teams">Team @route.RouteForTeam?.Id</select></p>
+                        <input type="hidden" asp-for="@route.Id">
+                    </div>
+                </div>
+                <!-- FirstCourse -->
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <p><b>Vorspeise</b></p>
+                        </div>
+                        <div class="form-group">
+                            <p>Adresse</p>
+                            <select asp-for="@route.FirstCourseHostTeam.FullAddress" class="form-control" asp-items="@Model.Addresses">@route.FirstCourseHostTeam?.FullAddress</select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <p>Host Team</p>
+                        <p>
+                            <div class="form-group">
+                                <select asp-for="@route.FirstCourseHostTeam.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseHostTeam?.Partner1.FullName</select>
+                            </div>
+                            <div class="form-group">
+                                <select asp-for="@route.FirstCourseHostTeam.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseHostTeam?.Partner2.FullName</select>
+                            </div>
+                        </p>
+                    </div>
+
+                    <div class="col-sm">
+                        <p>Gast Team 1</p>
+                        <p>
+                            <div class="form-group">
+                                <select asp-for="@route.FirstCourseGuestTeam1.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseGuestTeam1?.Partner1.FullName</select>
+                            </div>
+                            <div class="form-group">
+                                <select asp-for="@route.FirstCourseGuestTeam1.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseGuestTeam1?.Partner2.FullName</select>
+                            </div>
+                        </p>
+                    </div>
+
+                    <div class="col-sm">
+                        <p>Gast Team 2</p>
+                        <p>
+                            <div class="form-group">
+                                <select asp-for="@route.FirstCourseGuestTeam2.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseGuestTeam2?.Partner1.FullName</select>
+                            </div>
+                            <div class="form-group">
+                                <select asp-for="@route.FirstCourseGuestTeam2.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseGuestTeam2?.Partner2.FullName</select>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                <!-- SecondCourse -->
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <p><b>Hauptgang</b></p>
+                        </div>
+                        <div class="form-group">
+                            <p>Adresse</p>
+                            <select asp-for="@route.SecondCourseHostTeam.FullAddress" class="form-control" asp-items="@Model.Addresses">@route.SecondCourseHostTeam?.FullAddress</select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <p>Host Team</p>
+                        <p>
+                            <div class="form-group">
+                                <select asp-for="@route.SecondCourseHostTeam.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseHostTeam?.Partner1.FullName</select>
+                            </div>
+                            <div class="form-group">
+                                <select asp-for="@route.SecondCourseHostTeam.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseHostTeam?.Partner2.FullName</select>
+                            </div>
+                        </p>
+                    </div>
+
+                    <div class="col-sm">
+                        <p>Gast Team 1</p>
+                        <p>
+                            <div class="form-group">
+                                <select asp-for="@route.SecondCourseGuestTeam1.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseGuestTeam1?.Partner1.FullName</select>
+                            </div>
+                            <div class="form-group">
+                                <select asp-for="@route.SecondCourseGuestTeam1.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseGuestTeam1?.Partner2.FullName</select>
+                            </div>
+                        </p>
+                    </div>
+
+                    <div class="col-sm">
+                        <p>Gast Team 2</p>
+                        <p>
+                            <div class="form-group">
+                                <select asp-for="@route.SecondCourseGuestTeam2.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseGuestTeam2?.Partner1.FullName</select>
+                            </div>
+                            <div class="form-group">
+                                <select asp-for="@route.SecondCourseGuestTeam2.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseGuestTeam2?.Partner2.FullName</select>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                <!-- ThirdCourse -->
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <p><b>Nachtisch</b></p>
+                        </div>
+                        <div class="form-group">
+                            <p>Adresse</p>
+                            <select asp-for="@route.ThirdCourseHostTeam.FullAddress" class="form-control" asp-items="@Model.Addresses">@route.ThirdCourseHostTeam?.FullAddress</select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <p>Host Team</p>
+                        <p>
+                            <div class="form-group">
+                                <select asp-for="@route.ThirdCourseHostTeam.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseHostTeam?.Partner1.FullName</select>
+                            </div>
+                            <div class="form-group">
+                                <select asp-for="@route.ThirdCourseHostTeam.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseHostTeam?.Partner2.FullName</select>
+                            </div>
+                        </p>
+                    </div>
+
+                    <div class="col-sm">
+                        <p>Gast Team 1</p>
+                        <p>
+                            <div class="form-group">
+                                <select asp-for="@route.ThirdCourseGuestTeam1.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseGuestTeam1?.Partner1.FullName</select>
+                            </div>
+                            <div class="form-group">
+                                <select asp-for="@route.ThirdCourseGuestTeam1.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseGuestTeam1?.Partner2.FullName</select>
+                            </div>
+                        </p>
+                    </div>
+
+                    <div class="col-sm">
+                        <p>Gast Team 2</p>
+                        <p>
+                            <div class="form-group">
+                                <select asp-for="@route.ThirdCourseGuestTeam2.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseGuestTeam2?.Partner1.FullName</select>
+                            </div>
+                            <div class="form-group">
+                                <select asp-for="@route.ThirdCourseGuestTeam2.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseGuestTeam2?.Partner2.FullName</select>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <p>
+                            @*<button type="submit" class="btn btn-success" style="margin-top: 5px">Route speichern</button>*@
+                            <a class="btn btn-danger" asp-page-handler="RemoveRoute" asp-route-id="@route.Id" style="margin-top: 5px">Route löschen</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+</div>
+
+<div class="row" style="margin-top:10px">
+    <div class="col-sm-9">
+        <div class="form-row">
+            <label class="col-sm-3" for="routeFactorRange"><b>Route Factor</b></label>
+            <input class="col-sm-1 form-control" type="text" id="textInput" value="3">
+            <input id="routeFactorRange" value="3" type="range" class="custom-range col-sm-8" name="rangeInput" min="3" max="10" onchange="updateTextInput(this.value);">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-9 form-row" style="margin-top:10px">
+        <form asp-page-handler="CreateRoutes" method="post">
+            <button class="btn btn-primary">Routen erstellen</button>
+            <input type="hidden" id="routeFactor" name="factor" value="3" />
+        </form>
+        <a class="btn btn-primary" asp-page-handler="AddRoute" asp-route-eventid="@eventId" style="margin-left:5px;">Neue Route</a>
+        <a class="btn btn-danger" asp-page-handler="RemoveAllRoutes" asp-route-eventid="@eventId" style="margin-left:5px;">Alle Routen löschen</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function updateTextInput(val) {
+        document.getElementById('textInput').value = val;
+        document.getElementById('routeFactor').value = val;
+    }
+</script>
+

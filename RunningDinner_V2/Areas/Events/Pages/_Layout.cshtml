@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "/Views/Shared/_LayoutContainer.cshtml";
+}
+
+@RenderSection("Header", required: false)
+<div>
+    <div class="row" id="top-row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-9">
+            <h2>@ViewData["EventName"]</h2>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-3">
+            @await Html.PartialAsync("_EventNav")       
+        </div>
+        <div class="col-md-9">          
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

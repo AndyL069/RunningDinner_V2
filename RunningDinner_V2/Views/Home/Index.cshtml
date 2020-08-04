@@ -1,0 +1,355 @@
+﻿@using RunningDinner.Models.ViewModels
+@using System.Globalization;
+@using System.Threading;
+@using Microsoft.AspNetCore.Identity
+@using RunningDinner.Models.DatabaseModels
+@inject SignInManager<ApplicationUser> SignInManager
+@model HomeModel
+@{
+    bool isSignedIn = false;
+    isSignedIn = SignInManager.IsSignedIn(User);
+    ViewData["Title"] = "Home";
+    Thread.CurrentThread.CurrentCulture = new CultureInfo("de-DE");
+    bool isAdmin = User.IsInRole("Administrator");
+}
+
+<span class="fa-stack fa-4x" onclick="topFunction()" id="goToTop" title="Zum Seitenanfang">
+    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+    <i class="fas fa-arrow-up fa-stack-1x fa-inverse"></i>
+</span>
+
+<!-- Header -->
+<header class="masthead">
+    <div class="intro-text">
+        <!-- The video -->
+        <div class="fullscreen-bg">
+            <video loop muted autoplay poster="~/img/videoframe.jpg" class="fullscreen-bg__video">
+                <source src="~/vid/video.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="intro-lead-in" style="text-shadow: 1px 1px 2px #000000;">Willkommen bei Großstadt Dinner</div>
+        <div class="intro-heading text-uppercase" style="text-shadow: 1px 1px 2px #000000;">In drei Gängen durch deine Stadt</div>
+        @if (isSignedIn)
+        {
+            <div><a class="nav-button-brand btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#events">Zu den Events</a></div>
+        }
+        else
+        {
+            <div><a class="nav-button-brand btn btn-primary btn-xl text-uppercase js-scroll-trigger" asp-area="Identity" asp-page="/Account/Register">Jetzt kostenlos registrieren!</a></div>
+            <div><a class="nav-button-brand btn btn-light btn-xl text-uppercase js-scroll-trigger" style="margin-top:5px;" asp-area="Identity" asp-page="/Account/Login">Bereits registriert? Login</a></div>
+        }
+    </div>
+</header>
+@await Html.PartialAsync("_CookieConsentPartial")
+
+<!-- So geht's -->
+<section class="page-section bg-white" id="howto">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <h2 class="section-heading text-uppercase">So geht's</h2>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-mortar-pestle fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="service-heading">Kochen</h4>
+                <p class="text-muted">Du kochst mit deinem Kochpartner zusammen einen Gang und empfängst vier Gäste. </p>
+            </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-utensils fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="service-heading">Essen</h4>
+                <p class="text-muted">Bei den beiden anderen Gängen seid ihr zu Gast und lernt jeweils vier neue Leute kennen.</p>
+            </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-cocktail fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="service-heading">Connecten</h4>
+                <p class="text-muted">Im Anschluss gibt es eine After-Party bei der sich alle wiedertreffen.</p>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <h2 class="section-heading text-uppercase">In drei Schritten anmelden</h2>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-sign-in-alt fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="service-heading">1. Registrieren</h4>
+                <p class="text-muted">Klicke auf <a asp-area="Identity" asp-page="/Account/Register">Registrieren</a> und erstelle dir ein Benutzerkonto</p>
+            </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-calendar-day fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="service-heading">2. Zum Event anmelden</h4>
+                <p class="text-muted">Suche dir ein <a href="#events">Event</a> raus und melde dich dazu an</p>
+            </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-user-plus fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="service-heading">3. Partner einladen</h4>
+                <p class="text-muted">Suche dir einen Partner und lade ihn dazu ein mit dir zu kochen</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Ablauf -->
+<section class="bg-light page-section" id="timetable">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase">Ablauf</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="timeline">
+                    <li>
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="~/img/spinach-soup.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>17:30</h4>
+                                <h4 class="subheading">Vorspeise</h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="~/img/pizza-salami.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>19:30</h4>
+                                <h4 class="subheading">Hauptgang</h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="~/img/tiramisu.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>21:30</h4>
+                                <h4 class="subheading">Nachtisch</h4>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-image">
+                            <img class="rounded-circle img-fluid" src="~/img/lemon-drinks.jpg" alt="">
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h4>Ab 23:00</h4>
+                                <h4 class="subheading">After Party (mit allen Teams)</h4>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Events -->
+<section class="page-section bg-white" id="events">
+    <div class="container">
+        <!-- Current Events -->
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase">Kommende Events</h2>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var DinnerEvent in Model.CurrentEvents)
+            {
+                if (DinnerEvent.EventEnabled || isAdmin)
+                {
+                    <div class="col-md-4 col-sm-6 portfolio-item">
+                        <a class="portfolio-link" asp-area="Events" asp-page="/RegistrationData" asp-route-eventid="@DinnerEvent.Id">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content">
+                                    <i class="fas fa-plus fa-3x"></i>
+                                </div>
+                            </div>
+                            <img class="img-fluid" src="@DinnerEvent.EventPictureLink" alt="eventPicture">
+                        </a>
+                        <div class="portfolio-caption">
+                            <h4>@DinnerEvent.EventName</h4>
+                            <p>@DinnerEvent.EventDate.ToShortDateString()</p>
+                            <p class="text-muted">Anmeldeschluss: @DinnerEvent.LastRegisterDate.ToShortDateString()</p>
+                            <p>@DinnerEvent.ParticipantsCount Teilnehmer</p>
+                        </div>
+                    </div>
+                }
+            }
+            @if (Model.CurrentEvents.Count == 0)
+            {
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <div class="portfolio-caption">
+                        <h4>Zur Zeit keine Events</h4>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Past Events -->
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase">Vergangene Events</h2>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var DinnerEvent in Model.PastEvents)
+            {
+                <div class="col-md-4 col-sm-6 portfolio-item">
+                    <img class="img-fluid" src="@DinnerEvent.EventPictureLink" alt="eventPicture">
+                    <div class="portfolio-caption">
+                        <h4>@DinnerEvent.EventName</h4>
+                        <p>@DinnerEvent.EventDate.ToShortDateString()</p>
+                        <p>30 Teilnehmer</p>
+                    </div>
+                </div>
+            }
+        </div>
+        @*@await Html.PartialAsync("_NewsletterPartial")*@
+    </div>
+</section>
+
+<!-- Team -->
+<section class="bg-light page-section" id="team">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase">Das Team</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="~/img/team/natali.jpg" alt="">
+                    <h4>Natali</h4>
+                    <p class="text-muted">Marketing</p>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="team-member">
+                    <img class="mx-auto rounded-circle" src="~/img/team/andy.jpg" alt="">
+                    <h4>Andy</h4>
+                    <p class="text-muted">Website</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact -->
+<section class="page-section" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading text-uppercase">Kontakt</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="contactForm" name="sentMessage" novalidate="novalidate">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input class="form-control" id="name" type="text" placeholder="Dein Name *" required="required" data-validation-required-message="Bitte gib deinen Namen ein.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" id="email" type="email" placeholder="Deine Email *" required="required" data-validation-required-message="Bitte gib deine Email ein.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <textarea class="form-control" id="message" placeholder="Deine Nachricht *" required="required" data-validation-required-message="Bitte gib eine Nachricht ein."></textarea>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-12 text-center">
+                            <div id="success"></div>
+                            <button id="sendMessageButton" class="btn btn-primary btn-xl text-uppercase" type="submit">Abschicken</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Jetzt registrieren -->
+<section class="page-section">
+    <div class="container">
+        <div class="row justify-content-center" style="margin-bottom:20px">
+            @if (isSignedIn)
+            {
+               <a class="nav-button-brand btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#events">Zu den Events</a>
+            }
+            else
+            {
+                    <a class="nav-button-brand btn btn-primary btn-xl text-uppercase js-scroll-trigger" asp-area="Identity" asp-page="/Account/Register">Jetzt kostenlos registrieren!</a>
+            }
+        </div>
+        <div class="row justify-content-center">
+                <a class="btn btn-light btn-xl text-uppercase portfolio-link" data-toggle="modal" href="#faqModal">Noch Fragen?</a>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Go to to Button
+    var mybutton = document.getElementById("goToTop");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () { scrollFunction() };
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        $('body,html').animate({
+            scrollTop: 0                       // Scroll to top of body
+        }, 500);
+    }
+</script>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            mdc.autoInit();
+        });
+    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
