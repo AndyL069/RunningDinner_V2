@@ -33,7 +33,7 @@ namespace RunningDinner.Extensions
                 ResourceId = ResourceId.Numeric(contactId)
             };
 
-            await client.DeleteAsync(request).ConfigureAwait(false);
+            await client.DeleteAsync(request);
         }
         /// <summary>
         /// Adds an existing mailjet contact to a contact list
@@ -43,9 +43,9 @@ namespace RunningDinner.Extensions
         /// <param name="contactId"></param>
         /// <param name="listId"></param>
         /// <returns></returns>
-        public static async Task<int> AddContactToContactListAsync(this IEmailSender emailSender, string apiKey, string apiSecret, string contactId, string listId)
+        public static async Task<long> AddContactToContactListAsync(this IEmailSender emailSender, string apiKey, string apiSecret, string contactId, string listId)
         {
-            int listRecipientId = 0;
+            long listRecipientId = 0;
             MailjetClient client = new MailjetClient(apiKey, apiSecret)
             {
                 Version = ApiVersion.V3,
@@ -57,7 +57,7 @@ namespace RunningDinner.Extensions
             }
                 .Property("ContactID", contactId)
                 .Property("ListID", listId);
-            MailjetResponse response = await client.PostAsync(request).ConfigureAwait(false);
+            MailjetResponse response = await client.PostAsync(request);
             if (response.IsSuccessStatusCode)
             {
                 var responseData = response.GetData();
@@ -91,7 +91,7 @@ namespace RunningDinner.Extensions
                 .Property(Contact.IsExcludedFromCampaigns, "true")
                 .Property(Contact.Name, contactName)
                 .Property(Contact.Email, contactEmail);
-            MailjetResponse response = await client.PostAsync(request).ConfigureAwait(false);
+            MailjetResponse response = await client.PostAsync(request);
             if (response.IsSuccessStatusCode)
             {
                 var responseData = response.GetData();
@@ -123,7 +123,7 @@ namespace RunningDinner.Extensions
                 Resource = Contactslist.Resource,
             }
             .Property(Contactslist.Name, listName);
-            MailjetResponse response = await client.PostAsync(request).ConfigureAwait(false);
+            MailjetResponse response = await client.PostAsync(request);
             if (response.IsSuccessStatusCode)
             {
                 var responseData = response.GetData();
@@ -196,7 +196,7 @@ namespace RunningDinner.Extensions
                 }}
             });
 
-            MailjetResponse response = await client.PostAsync(request).ConfigureAwait(false);
+            MailjetResponse response = await client.PostAsync(request);
             if (response.IsSuccessStatusCode)
             {
                 //logger.LogError(string.Format(CultureInfo.CurrentCulture, "Total: {0}, Count: {1}", response.GetTotal(), response.GetCount()));
@@ -275,7 +275,7 @@ namespace RunningDinner.Extensions
                 }}
             });
 
-            MailjetResponse response = await client.PostAsync(request).ConfigureAwait(false);
+            MailjetResponse response = await client.PostAsync(request);
             if (response.IsSuccessStatusCode)
             {
                 return true;

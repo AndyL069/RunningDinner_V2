@@ -56,7 +56,7 @@ namespace RunningDinner.Areas.Events.Pages
             List<ApplicationUser> participants = new List<ApplicationUser>();
             foreach (EventParticipation participation in participations)
             {
-                var user = await _userManager.FindByIdAsync(participation.User.Id).ConfigureAwait(false);
+                var user = await _userManager.FindByIdAsync(participation.User.Id);
                 participants.Add(user);
             }
 

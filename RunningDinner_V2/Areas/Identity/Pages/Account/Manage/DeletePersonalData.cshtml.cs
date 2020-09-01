@@ -64,28 +64,28 @@ namespace RunningDinner.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGet()
         {
-            var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            RequirePassword = await _userManager.HasPasswordAsync(user).ConfigureAwait(false);
+            RequirePassword = await _userManager.HasPasswordAsync(user);
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            RequirePassword = await _userManager.HasPasswordAsync(user).ConfigureAwait(false);
+            RequirePassword = await _userManager.HasPasswordAsync(user);
             if (RequirePassword)
             {
-                if (!await _userManager.CheckPasswordAsync(user, Input.Password).ConfigureAwait(false))
+                if (!await _userManager.CheckPasswordAsync(user, Input.Password))
                 {
                     ModelState.AddModelError(string.Empty, "Incorrect password.");
                     return Page();
@@ -181,12 +181,12 @@ namespace RunningDinner.Areas.Identity.Pages.Account.Manage
                 {
                     if (team.Partner1 != null)
                     {
-                        await _emailSender.RemoveListRecipientAsync(apiKey, apiSecret, team.Partner1.ListRecipientId).ConfigureAwait(false);
+                        await _emailSender.RemoveListRecipientAsync(apiKey, apiSecret, team.Partner1.ListRecipientId);
                     }
 
                     if (team.Partner2 != null)
                     {
-                        await _emailSender.RemoveListRecipientAsync(apiKey, apiSecret, team.Partner2.ListRecipientId).ConfigureAwait(false);
+                        await _emailSender.RemoveListRecipientAsync(apiKey, apiSecret, team.Partner2.ListRecipientId);
                     }
 
                     TeamsRepository.Delete(team);
@@ -211,17 +211,17 @@ namespace RunningDinner.Areas.Identity.Pages.Account.Manage
             }
 
             // Delete user from Mailjet contact lists
-            await _emailSender.RemoveListRecipientAsync(apiKey, apiSecret, user.ListRecipientId).ConfigureAwait(false);
+            await _emailSender.RemoveListRecipientAsync(apiKey, apiSecret, user.ListRecipientId);
 
             // Delete user
-            var result = await _userManager.DeleteAsync(user).ConfigureAwait(false);
-            var userId = await _userManager.GetUserIdAsync(user).ConfigureAwait(false);
+            var result = await _userManager.DeleteAsync(user);
+            var userId = await _userManager.GetUserIdAsync(user);
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Unexpected error occurred deleting user with ID '{userId}'.");
             }
 
-            await _signInManager.SignOutAsync().ConfigureAwait(false);
+            await _signInManager.SignOutAsync();
             _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
             return Redirect("~/");
         }

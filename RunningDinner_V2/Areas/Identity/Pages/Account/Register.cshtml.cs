@@ -84,13 +84,13 @@ namespace RunningDinner.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync().ConfigureAwait(false)).ToList();
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync().ConfigureAwait(false)).ToList();
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = Input.Email, 
@@ -99,12 +99,12 @@ namespace RunningDinner.Areas.Identity.Pages.Account
                     LastName = Input.LastName, 
                     FullName = Input.FirstName + " " + Input.LastName,
                     SendEventNewsletter = Input.SendEventNewsletter };
-                var result = await _userManager.CreateAsync(user, Input.Password).ConfigureAwait(false);
+                var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false).ConfigureAwait(false);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
@@ -115,26 +115,18 @@ namespace RunningDinner.Areas.Identity.Pages.Account
                     // Send the email
                     string apiKey = Configuration?.GetEmailSettings("apiKey");
                     string apiSecret = Configuration?.GetEmailSettings("apiSecret");
-                    int contactId = await _emailSender.CreateContactAsync(apiKey, apiSecret, user.FirstName + " " + user.LastName, user.Email).ConfigureAwait(false);
+                    int contactId = await _emailSender.CreateContactAsync(apiKey, apiSecret, user.FirstName + " " + user.LastName, user.Email);
                     if (contactId != 0)
                     {
                         user.ContactId = contactId;
-                        int listRecipientId = await _emailSender.AddContactToContactListAsync(apiKey, apiSecret, contactId.ToString(CultureInfo.InvariantCulture), "12508").ConfigureAwait(false);
+                        long listRecipientId = await _emailSender.AddContactToContactListAsync(apiKey, apiSecret, contactId.ToString(CultureInfo.InvariantCulture), "12508");
                         user.ListRecipientId = listRecipientId;
-                        await _userManager.UpdateAsync(user).ConfigureAwait(false);
+                        await _userManager.UpdateAsync(user);
                     }
 
-                    await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1080920, "Bitte bestätige deine Emailadresse", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", Input.FirstName, Input.Email, Input.FirstName + " " + Input.LastName, callbackUrl).ConfigureAwait(false);
-                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    //{
-                    //    return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
-                    //}
-
-                    //else
-                    //{
-                        await _signInManager.SignInAsync(user, isPersistent: false).ConfigureAwait(false);
-                        return LocalRedirect(returnUrl);
-                    //}
+                    await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1080920, "Bitte bestätige deine Emailadresse", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", Input.FirstName, Input.Email, Input.FirstName + " " + Input.LastName, callbackUrl);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
                 }
 
                 foreach (var error in result.Errors)

@@ -16,7 +16,7 @@
             <div class="container bg-light">
                 <div class="row">
                     <div class="col-sm">
-                        <p><h4>Route @route.Id</h4><select asp-for="@route.RouteForTeam.Id" class="form-control" asp-items="@Model.Teams">Team @route.RouteForTeam?.Id</select></p>
+                        <p><h4>Route @route.Id (Team @route.RouteForTeam.Id)</h4>
                         <input type="hidden" asp-for="@route.Id">
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                         </div>
                         <div class="form-group">
                             <p>Adresse</p>
-                            <select asp-for="@route.FirstCourseHostTeam.FullAddress" class="form-control" asp-items="@Model.Addresses">@route.FirstCourseHostTeam?.FullAddress</select>
+                            <input asp-for="@route.FirstCourseHostTeam.FullAddress" disabled class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -38,10 +38,13 @@
                         <p>Host Team</p>
                         <p>
                             <div class="form-group">
-                                <select asp-for="@route.FirstCourseHostTeam.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseHostTeam?.Partner1.FullName</select>
+                                <select asp-for="@route.FirstCourseHostTeam.Id" class="form-control" asp-items="@Model.Teams"></select>
                             </div>
                             <div class="form-group">
-                                <select asp-for="@route.FirstCourseHostTeam.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseHostTeam?.Partner2.FullName</select>
+                                <input asp-for="@route.FirstCourseHostTeam.Partner1.FullName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="@route.FirstCourseHostTeam.Partner2.FullName" disabled class="form-control" />
                             </div>
                         </p>
                     </div>
@@ -50,10 +53,13 @@
                         <p>Gast Team 1</p>
                         <p>
                             <div class="form-group">
-                                <select asp-for="@route.FirstCourseGuestTeam1.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseGuestTeam1?.Partner1.FullName</select>
+                                <select asp-for="@route.FirstCourseGuestTeam1.Id" class="form-control" asp-items="@Model.Teams"></select>
                             </div>
                             <div class="form-group">
-                                <select asp-for="@route.FirstCourseGuestTeam1.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseGuestTeam1?.Partner2.FullName</select>
+                                <input asp-for="@route.FirstCourseGuestTeam1.Partner1.FullName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="@route.FirstCourseGuestTeam1.Partner2.FullName" disabled class="form-control" />
                             </div>
                         </p>
                     </div>
@@ -62,10 +68,13 @@
                         <p>Gast Team 2</p>
                         <p>
                             <div class="form-group">
-                                <select asp-for="@route.FirstCourseGuestTeam2.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseGuestTeam2?.Partner1.FullName</select>
+                                <select asp-for="@route.FirstCourseGuestTeam2.Id" class="form-control" asp-items="@Model.Teams"></select>
                             </div>
                             <div class="form-group">
-                                <select asp-for="@route.FirstCourseGuestTeam2.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.FirstCourseGuestTeam2?.Partner2.FullName</select>
+                                <input asp-for="@route.FirstCourseGuestTeam2.Partner1.FullName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="@route.FirstCourseGuestTeam2.Partner2.FullName" disabled class="form-control" />
                             </div>
                         </p>
                     </div>
@@ -78,7 +87,7 @@
                         </div>
                         <div class="form-group">
                             <p>Adresse</p>
-                            <select asp-for="@route.SecondCourseHostTeam.FullAddress" class="form-control" asp-items="@Model.Addresses">@route.SecondCourseHostTeam?.FullAddress</select>
+                            <input asp-for="@route.SecondCourseHostTeam.FullAddress" disabled class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -88,10 +97,13 @@
                         <p>Host Team</p>
                         <p>
                             <div class="form-group">
-                                <select asp-for="@route.SecondCourseHostTeam.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseHostTeam?.Partner1.FullName</select>
+                                <select asp-for="@route.SecondCourseHostTeam.Id" class="form-control" asp-items="@Model.Teams"></select>
                             </div>
                             <div class="form-group">
-                                <select asp-for="@route.SecondCourseHostTeam.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseHostTeam?.Partner2.FullName</select>
+                                <input asp-for="@route.SecondCourseHostTeam.Partner1.FullName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="@route.SecondCourseHostTeam.Partner2.FullName" disabled class="form-control" />
                             </div>
                         </p>
                     </div>
@@ -100,10 +112,13 @@
                         <p>Gast Team 1</p>
                         <p>
                             <div class="form-group">
-                                <select asp-for="@route.SecondCourseGuestTeam1.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseGuestTeam1?.Partner1.FullName</select>
+                                <select asp-for="@route.SecondCourseGuestTeam1.Id" class="form-control" asp-items="@Model.Teams"></select>
                             </div>
                             <div class="form-group">
-                                <select asp-for="@route.SecondCourseGuestTeam1.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseGuestTeam1?.Partner2.FullName</select>
+                                <input asp-for="@route.SecondCourseGuestTeam1.Partner1.FullName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="@route.SecondCourseGuestTeam1.Partner2.FullName" disabled class="form-control" />
                             </div>
                         </p>
                     </div>
@@ -112,10 +127,13 @@
                         <p>Gast Team 2</p>
                         <p>
                             <div class="form-group">
-                                <select asp-for="@route.SecondCourseGuestTeam2.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseGuestTeam2?.Partner1.FullName</select>
+                                <select asp-for="@route.SecondCourseGuestTeam2.Id" class="form-control" asp-items="@Model.Teams"></select>
                             </div>
                             <div class="form-group">
-                                <select asp-for="@route.SecondCourseGuestTeam2.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.SecondCourseGuestTeam2?.Partner2.FullName</select>
+                                <input asp-for="@route.SecondCourseGuestTeam2.Partner1.FullName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="@route.SecondCourseGuestTeam2.Partner2.FullName" disabled class="form-control" />
                             </div>
                         </p>
                     </div>
@@ -128,7 +146,7 @@
                         </div>
                         <div class="form-group">
                             <p>Adresse</p>
-                            <select asp-for="@route.ThirdCourseHostTeam.FullAddress" class="form-control" asp-items="@Model.Addresses">@route.ThirdCourseHostTeam?.FullAddress</select>
+                            <input asp-for="@route.ThirdCourseHostTeam.FullAddress" disabled class="form-control"/>
                         </div>
                     </div>
                 </div>
@@ -138,10 +156,13 @@
                         <p>Host Team</p>
                         <p>
                             <div class="form-group">
-                                <select asp-for="@route.ThirdCourseHostTeam.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseHostTeam?.Partner1.FullName</select>
+                                <select asp-for="@route.ThirdCourseHostTeam.Id" class="form-control" asp-items="@Model.Teams"></select>
                             </div>
                             <div class="form-group">
-                                <select asp-for="@route.ThirdCourseHostTeam.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseHostTeam?.Partner2.FullName</select>
+                                <input asp-for="@route.ThirdCourseHostTeam.Partner1.FullName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="@route.ThirdCourseHostTeam.Partner2.FullName" disabled class="form-control" />
                             </div>
                         </p>
                     </div>
@@ -150,10 +171,13 @@
                         <p>Gast Team 1</p>
                         <p>
                             <div class="form-group">
-                                <select asp-for="@route.ThirdCourseGuestTeam1.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseGuestTeam1?.Partner1.FullName</select>
+                                <select asp-for="@route.ThirdCourseGuestTeam1.Id" class="form-control" asp-items="@Model.Teams"></select>
                             </div>
                             <div class="form-group">
-                                <select asp-for="@route.ThirdCourseGuestTeam1.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseGuestTeam1?.Partner2.FullName</select>
+                                <input asp-for="@route.ThirdCourseGuestTeam1.Partner1.FullName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="@route.ThirdCourseGuestTeam1.Partner2.FullName" disabled class="form-control" />
                             </div>
                         </p>
                     </div>
@@ -162,10 +186,13 @@
                         <p>Gast Team 2</p>
                         <p>
                             <div class="form-group">
-                                <select asp-for="@route.ThirdCourseGuestTeam2.Partner1.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseGuestTeam2?.Partner1.FullName</select>
+                                <select asp-for="@route.ThirdCourseGuestTeam2.Id" class="form-control" asp-items="@Model.Teams"></select>
                             </div>
                             <div class="form-group">
-                                <select asp-for="@route.ThirdCourseGuestTeam2.Partner2.Id" class="form-control" asp-items="@Model.Participants">@route.ThirdCourseGuestTeam2?.Partner2.FullName</select>
+                                <input asp-for="@route.ThirdCourseGuestTeam2.Partner1.FullName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="@route.ThirdCourseGuestTeam2.Partner2.FullName" disabled class="form-control" />
                             </div>
                         </p>
                     </div>

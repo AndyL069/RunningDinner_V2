@@ -51,7 +51,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account.Manage
 
         public async Task OnGetSaveImageAsync()
         {
-            var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            var user = await _userManager.GetUserAsync(User);
             Input = new InputModel
             {
                 FirstName = user.FirstName,
@@ -69,8 +69,8 @@ namespace RunningDinner.Areas.Identity.Pages.Account.Manage
             user.ProfilePicture = user.TemporaryProfilePicture;
             Input.ProfilePicture = user.ProfilePicture;
             user.TemporaryProfilePicture = null;
-            await _userManager.UpdateAsync(user).ConfigureAwait(false);
-            await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            await _userManager.UpdateAsync(user);
+            await _userManager.GetUserAsync(User);
         }
 
         private void Load(ApplicationUser user)
@@ -87,7 +87,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -99,7 +99,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -116,8 +116,8 @@ namespace RunningDinner.Areas.Identity.Pages.Account.Manage
             user.FullName = Input.FirstName + " " + Input.LastName;
             user.SendEventNewsletter = Input.SendEventNewsletter;
             user.ContactData = Input.ContactData;
-            await _userManager.UpdateAsync(user).ConfigureAwait(false);
-            await _signInManager.RefreshSignInAsync(user).ConfigureAwait(false);
+            await _userManager.UpdateAsync(user);
+            await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Dein Profil wurde gespeichert";
             return RedirectToPage();
         }

@@ -56,7 +56,7 @@ namespace RunningDinner.Helpers
             // Create the blob client
             BlobClient blobClient = containerClient.GetBlobClient(fileName);
             // Upload the file
-            Response<BlobContentInfo> response = await blobClient.UploadAsync(fileStream).ConfigureAwait(false);
+            Response<BlobContentInfo> response = await blobClient.UploadAsync(fileStream);
             return response;
         }
 
@@ -66,7 +66,7 @@ namespace RunningDinner.Helpers
             List<string> thumbnailUrls = new List<string>();
             var baseUrl = configuration.GetAzureStorageSettings("BaseUrl");
             var imageContainer = configuration.GetAzureStorageSettings("ImageContainer");
-            eventPictures = await GetEventPictures(configuration).ConfigureAwait(false);
+            eventPictures = await GetEventPictures(configuration);
             foreach (string image in eventPictures)
             {
                 thumbnailUrls.Add(baseUrl + imageContainer + "/" + image);

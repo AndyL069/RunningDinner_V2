@@ -27,8 +27,8 @@
     </select>
 
 <div class="image-container">
-    <img class="img-fluid" src="@ViewData["EventPictureLink"]" />
-    <div class="centered-image-text">@ViewData["EventDate"]</div>
+    <img class="img-fluid" src="@ViewData["EventPictureLink"]"  />
+    <div class="centered-image-text" id="event-date">@ViewData["EventDate"]</div>
 </div>
 
 <ul class="nav nav-pills flex-column vertical-nav" id="eventNav">
@@ -43,7 +43,7 @@
     @if (isAdmin)
     {
         <li class="nav-item text-uppercase text-center"><h6 style="color:#1899B5;margin-bottom:0;">Admin Settings</h6></li>
-        <li class="nav-item text-uppercase @EventNavPages.SettingsNavClass(ViewContext)"><a asp-page="Settings" class="nav-link @(ViewData["ActivePage"].ToString() == "Settings" ? "active" : "")"><h6><i class="fas fa-wrench"></i> Einstellungen</h6></a></li>
+        <li class="nav-item text-uppercase @EventNavPages.SettingsNavClass(ViewContext)"><a asp-page="EventSettings" class="nav-link @(ViewData["ActivePage"].ToString() == "EventSettings" ? "active" : "")"><h6><i class="fas fa-wrench"></i> Einstellungen</h6></a></li>
         <li class="nav-item text-uppercase @EventNavPages.TeamsNavClass(ViewContext)"><a asp-page="Teams" class="nav-link @(ViewData["ActivePage"].ToString() == "Teams" ? "active" : "")"><h6><i class="fas fa-users"></i> Teams</h6></a></li>
         <li class="nav-item text-uppercase @EventNavPages.RoutesNavClass(ViewContext)"><a asp-page="Routes" class="nav-link @(ViewData["ActivePage"].ToString() == "Routes" ? "active" : "")"><h6><i class="fas fa-route"></i> Routen</h6></a></li>
         <li class="nav-item text-uppercase @EventNavPages.KitchenMapNavClass(ViewContext)"><a asp-page="KitchenMap" class="nav-link @(ViewData["ActivePage"].ToString() == "KitchenMap" ? "active" : "")"><h6><i class="fas fa-map-marked-alt"></i> Küchenkarte</h6></a></li>

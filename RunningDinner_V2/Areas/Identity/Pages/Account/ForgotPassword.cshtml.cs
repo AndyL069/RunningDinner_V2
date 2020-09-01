@@ -46,8 +46,8 @@ namespace RunningDinner.Areas.Identity.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email).ConfigureAwait(false);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user).ConfigureAwait(false)))
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToPage("./ForgotPasswordConfirmation");
@@ -55,7 +55,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account
 
                 // For more information on how to enable account confirmation and password reset please 
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user).ConfigureAwait(false);
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
                     "/Account/ResetPassword",
@@ -66,7 +66,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account
                 // Send the email
                 string apiKey = Configuration?.GetEmailSettings("apiKey");
                 string apiSecret = Configuration?.GetEmailSettings("apiSecret");
-                await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1081043, "Passwort zurücksetzen", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", user.FirstName, Input.Email, user.FirstName + " " + user.LastName, callbackUrl).ConfigureAwait(false);
+                await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1081043, "Passwort zurücksetzen", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", user.FirstName, Input.Email, user.FirstName + " " + user.LastName, callbackUrl);
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 

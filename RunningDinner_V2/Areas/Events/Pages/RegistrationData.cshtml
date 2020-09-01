@@ -169,7 +169,7 @@
                             <div class="mdc-notched-outline">
                                 <div class="mdc-notched-outline__leading"></div>
                                 <div class="mdc-notched-outline__notch">
-                                    <span class="mdc-floating-label" id="address-number-id">Nummer</span>
+                                    <span class="mdc-floating-label" id="address-number-id">Hausnr.</span>
                                 </div>
                                 <div class="mdc-notched-outline__trailing"></div>
                             </div>
@@ -221,13 +221,13 @@
                 <b><label asp-for="Input.SelectedCourse"></label></b>
                 <div class="form-group">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-outline-primary @( Model.Input.SelectedCourse == "FirstCourse" ? "active" : "" )">
+                        <label class="btn btn-outline-secondary @( Model.Input.SelectedCourse == "FirstCourse" ? "active" : "" )">
                             @Html.RadioButtonFor(model => model.Input.SelectedCourse, "FirstCourse", new { id = "FirstCourse" }) Vorspeise
                         </label>
-                        <label class="btn btn-outline-primary @( Model.Input.SelectedCourse == "SecondCourse" ? "active" : "" )">
+                        <label class="btn btn-outline-secondary @( Model.Input.SelectedCourse == "SecondCourse" ? "active" : "" )">
                             @Html.RadioButtonFor(model => model.Input.SelectedCourse, "SecondCourse", new { id = "SecondCourse" }) Hauptgang
                         </label>
-                        <label class="btn btn-outline-primary @( Model.Input.SelectedCourse == "ThirdCourse" ? "active" : "" )">
+                        <label class="btn btn-outline-secondary @( Model.Input.SelectedCourse == "ThirdCourse" ? "active" : "" )">
                             @Html.RadioButtonFor(model => model.Input.SelectedCourse, "ThirdCourse", new { id = "ThirdCourse" }) Nachtisch
                         </label>
                     </div>

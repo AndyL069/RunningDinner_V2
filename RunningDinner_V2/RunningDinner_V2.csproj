@@ -23,6 +23,10 @@
     <Compile Remove="Data\Migrations\20200109225116_Invitation.Designer.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.2.0" />

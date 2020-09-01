@@ -58,7 +58,7 @@ namespace RunningDinner.Areas.Events.Pages
                 return RedirectToAction("Index", "Home");
             }
 
-            ApplicationUser invitee = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
+            ApplicationUser invitee = await _userManager.FindByEmailAsync(email);
             if (invitee == null)
             {
                 // If user doesn't exist, redirect to Register page
@@ -89,20 +89,9 @@ namespace RunningDinner.Areas.Events.Pages
             string apiKey = Configuration?.GetEmailSettings("apiKey");
             string apiSecret = Configuration?.GetEmailSettings("apiSecret");
             // Save list recipient id to database
-            int listRecipientId = await EmailSender.AddContactToContactListAsync(apiKey, apiSecret, invitee.ContactId.ToString(CultureInfo.InvariantCulture), dinnerEvent.ContactList.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+            long listRecipientId = await EmailSender.AddContactToContactListAsync(apiKey, apiSecret, invitee.ContactId.ToString(CultureInfo.InvariantCulture), dinnerEvent.ContactList.ToString(CultureInfo.InvariantCulture));
             invitee.ListRecipientId = listRecipientId;
-            await _userManager.UpdateAsync(invitee).ConfigureAwait(false);
-
-            //// Check if other teams with invitee exist
-            //var teams = TeamsRepository.SearchFor(x => x.Partner1.Id == invitee.Id || x.Partner2.Id == invitee.Id);
-            //if (teams.Any())
-            //{
-            //    foreach(var team in teams)
-            //    {
-            //        TeamsRepository.Delete(team);
-            //    }
-            //}
-
+            await _userManager.UpdateAsync(invitee);
             EventParticipation inviterParticipation = EventParticipationsRepository.SearchFor(x => x.User.Id == invitation.User.Id && x.Event.Id == invitation.Event.Id).FirstOrDefault();
             // Create a new team
             Team newTeam = new Team
@@ -124,7 +113,7 @@ namespace RunningDinner.Areas.Events.Pages
             TeamsRepository.Insert(newTeam);
             TeamsRepository.SaveChanges();
             // Send the email
-            await EmailSender.SendMailjetAsync(apiKey, apiSecret, 1197519, "Deine Einladung wurde angenommen", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", invitation.User.FirstName, invitation.User.Email, invitation.User.FirstName + " " + invitation.User.LastName, "", invitee.FirstName, invitation.Event.EventName, invitation.Event.EventDate.ToShortDateString()).ConfigureAwait(false);
+            await EmailSender.SendMailjetAsync(apiKey, apiSecret, 1197519, "Deine Einladung wurde angenommen", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", invitation.User.FirstName, invitation.User.Email, invitation.User.FirstName + " " + invitation.User.LastName, "", invitee.FirstName, invitation.Event.EventName, invitation.Event.EventDate.ToShortDateString());
             TempData["StatusMessage"] = @"Du hast die Einladung erfolgreich angenommen. Die Teamdaten deines Partners wurden übernommen. Ihr seid nun vollständig angemeldet.";
             return RedirectToPage("./RegistrationData");
         }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace RunningDinner.Helpers
 {
@@ -27,10 +28,10 @@ namespace RunningDinner.Helpers
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
-        public static GeoCoordinate GetCoordinates(string address)
+        public static async Task<GeoCoordinate> GetCoordinates(string address)
         {
             string url = Url + "&searchtext=" + address;
-            HttpResponseMessage response = client.GetAsync(new Uri(url)).Result;
+            HttpResponseMessage response = await client.GetAsync(new Uri(url));
             string content = response.Content.ReadAsStringAsync().Result;
             RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(content);
             double latitude = rootObject.Response.View[0].Result[0].Location.DisplayPosition.Latitude;

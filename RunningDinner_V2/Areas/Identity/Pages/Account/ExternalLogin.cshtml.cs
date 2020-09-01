@@ -82,7 +82,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account
                 return RedirectToPage("./Login", new {ReturnUrl = returnUrl });
             }
 
-            var info = await _signInManager.GetExternalLoginInfoAsync().ConfigureAwait(false);
+            var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 ErrorMessage = "Error loading external login information.";
@@ -90,7 +90,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor : true).ConfigureAwait(false);
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor : true);
             if (result.Succeeded)
             {
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
@@ -131,16 +131,16 @@ namespace RunningDinner.Areas.Identity.Pages.Account
                         ProfilePicture = Input.ProfilePicture,
                         FirstName = Input.FirstName, 
                         LastName = Input.LastName };
-                    var createResult = await _userManager.CreateAsync(user).ConfigureAwait(false);
+                    var createResult = await _userManager.CreateAsync(user);
                     if (createResult.Succeeded)
                     {
-                        createResult = await _userManager.AddLoginAsync(user, info).ConfigureAwait(false);
+                        createResult = await _userManager.AddLoginAsync(user, info);
                         if (createResult.Succeeded)
                         {
-                            await _signInManager.SignInAsync(user, isPersistent: false).ConfigureAwait(false);
+                            await _signInManager.SignInAsync(user, isPersistent: false);
                             _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                            var userId = await _userManager.GetUserIdAsync(user).ConfigureAwait(false);
-                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
+                            var userId = await _userManager.GetUserIdAsync(user);
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                             var callbackUrl = Url.Page(
                                 "/Account/ConfirmEmail",
@@ -151,16 +151,16 @@ namespace RunningDinner.Areas.Identity.Pages.Account
                             // Send the email
                             string apiKey = Configuration?.GetEmailSettings("apiKey");
                             string apiSecret = Configuration?.GetEmailSettings("apiSecret");
-                            int contactId = await _emailSender.CreateContactAsync(apiKey, apiSecret, user.FirstName + " " + user.LastName, user.Email).ConfigureAwait(false);
+                            int contactId = await _emailSender.CreateContactAsync(apiKey, apiSecret, user.FirstName + " " + user.LastName, user.Email);
                             if (contactId != 0)
                             {
                                 user.ContactId = contactId;
-                                int listRecipientId = await _emailSender.AddContactToContactListAsync(apiKey, apiSecret, contactId.ToString(CultureInfo.InvariantCulture), "12508").ConfigureAwait(false);
+                                long listRecipientId = await _emailSender.AddContactToContactListAsync(apiKey, apiSecret, contactId.ToString(CultureInfo.InvariantCulture), "12508");
                                 user.ListRecipientId = listRecipientId;
-                                await _userManager.UpdateAsync(user).ConfigureAwait(false);
+                                await _userManager.UpdateAsync(user);
                             }
 
-                            await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1080920, "Bitte bestätige deine Emailadresse", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", Input.FirstName, Input.Email, Input.FirstName + " " + Input.LastName, callbackUrl).ConfigureAwait(false);
+                            await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1080920, "Bitte bestätige deine Emailadresse", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", Input.FirstName, Input.Email, Input.FirstName + " " + Input.LastName, callbackUrl);
                             return LocalRedirect(returnUrl);
                         }
                     }
@@ -179,7 +179,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             // Get the information about the user from the external login provider
-            var info = await _signInManager.GetExternalLoginInfoAsync().ConfigureAwait(false);
+            var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 ErrorMessage = "Error loading external login information during confirmation.";
@@ -194,16 +194,16 @@ namespace RunningDinner.Areas.Identity.Pages.Account
                     ProfilePicture = Input.ProfilePicture,
                     FirstName = Input.FirstName, 
                     LastName = Input.LastName };
-                var result = await _userManager.CreateAsync(user).ConfigureAwait(false);
+                var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
-                    result = await _userManager.AddLoginAsync(user, info).ConfigureAwait(false);
+                    result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false).ConfigureAwait(false);
+                        await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        var userId = await _userManager.GetUserIdAsync(user).ConfigureAwait(false);
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
+                        var userId = await _userManager.GetUserIdAsync(user);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                         var callbackUrl = Url.Page(
                             "/Account/ConfirmEmail",
@@ -214,7 +214,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account
                         // Send the email
                         string apiKey = Configuration?.GetEmailSettings("apiKey");
                         string apiSecret = Configuration?.GetEmailSettings("apiSecret");
-                        await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1080920, "Bitte bestätige deine Emailadresse", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", Input.FirstName, Input.Email, Input.FirstName + " " + Input.LastName, callbackUrl).ConfigureAwait(false);
+                        await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1080920, "Bitte bestätige deine Emailadresse", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", Input.FirstName, Input.Email, Input.FirstName + " " + Input.LastName, callbackUrl);
                         return LocalRedirect(returnUrl);
                     }
                 }

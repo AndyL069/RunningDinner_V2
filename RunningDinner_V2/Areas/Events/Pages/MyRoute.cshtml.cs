@@ -62,7 +62,7 @@ namespace RunningDinner.Areas.Events.Pages
 
             ViewData["IsParticipating"] = HttpContext.Session.GetString("IsParticipating");
             var eventId = int.Parse(HttpContext.Session.GetString("EventId"), CultureInfo.CurrentCulture);
-            ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return Page();

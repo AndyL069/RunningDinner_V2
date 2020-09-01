@@ -1,11 +1,9 @@
-.textarea {
-    background-color: white;
+#event-date {
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-a.btn-outline-primary:hover, .btn-outline-primary:hover, .btn-outline-primary:focus, .btn-outline-primary:active, .btn-outline-primary.active {
-    color: #555 !important;
-    border-color: #555 !important;
-    background-color: white !important;
+.textarea {
+    background-color: white;
 }
 
 select#eventNavCompact.form-control {
@@ -306,7 +304,7 @@ img::-moz-selection {
 .btn-outline-primary:active, .btn-outline-primary:focus, .btn-outline-primary:hover {
     background-color: #1899B5 !important;
     border-color: #1899B5 !important;
-    color: white;
+    color: white !important;
 }
 
 .btn-primary:active, .btn-primary:focus {

@@ -148,12 +148,11 @@ function addTextMarkerToMap(map, ui, coordinate, text) {
         ui.addBubble(bubble);
     }, false);
 
-    map.addObject(group);
     // Define a variable holding SVG mark-up that defines an icon image:
     var svgMarkup = '<svg width="36" height="36" ' +
         'xmlns="http://www.w3.org/2000/svg">' +
-        '<rect stroke="white" fill="#1b468d" x="1" y="1" width="36" ' +
-        'height="36" /><text x="18" y="30" font-size="18pt" ' +
+        '<rect stroke="#1b468d" fill="#1b468d" x="1" y="1" width="36" ' +
+        'height="36" /><text x="18" y="26" font-size="18pt" ' +
         'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
         'fill="white">' + text + "</text></svg>";
     
@@ -165,4 +164,5 @@ function addTextMarkerToMap(map, ui, coordinate, text) {
     var icon = new H.map.Icon(svgMarkup),
         marker = new H.map.Marker(position, { icon: icon });
     group.addObject(marker);
+    map.addObject(group);
 }

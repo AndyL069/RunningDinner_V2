@@ -58,12 +58,12 @@ namespace RunningDinner.Areas.Identity.Pages.Account.Manage
         /// <returns></returns>
         private async Task<List<string>> GetEventPictures()
         {          
-            return await StorageHelper.GetEventPictures(_configuration).ConfigureAwait(false);
+            return await StorageHelper.GetEventPictures(_configuration);
         }
 
         public async Task<IActionResult> OnGet()
         {
-            var images = await GetEventPictures().ConfigureAwait(false);
+            var images = await GetEventPictures();
             var baseUrl = _configuration?.GetAzureStorageSettings("BaseUrl");
             var imageContainer = _configuration?.GetAzureStorageSettings("ImageContainer");
             Images = new List<SelectListItem>();
@@ -93,7 +93,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account.Manage
             _dinnerEventsRepository.SaveChanges();
             var apiKey = _configuration.GetEmailSettings("apiKey");
             var apiSecret = _configuration.GetEmailSettings("apiSecret");
-            int id = await _emailSender.CreateContactListAsync(apiKey, apiSecret, Input.EventName).ConfigureAwait(false);
+            int id = await _emailSender.CreateContactListAsync(apiKey, apiSecret, Input.EventName);
             if (id != 0)
             {
                 dinnerEvent.ContactList = id;

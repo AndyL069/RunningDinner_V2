@@ -52,7 +52,7 @@ namespace RunningDinner.Areas.Events.Pages
                 HttpContext.Session.SetString("EventId", eventId.ToString(CultureInfo.CurrentCulture));
             }
 
-            ApplicationUser user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+            ApplicationUser user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return Page();

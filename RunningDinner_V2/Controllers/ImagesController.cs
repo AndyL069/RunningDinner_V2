@@ -65,7 +65,7 @@ namespace RunningDinner.Controllers
                         {
                             using Stream stream = formFile.OpenReadStream();
                             fileName = Guid.NewGuid() + formFile.FileName;
-                            response = await StorageHelper.UploadFileToStorage(stream, fileName, _configuration).ConfigureAwait(false);
+                            response = await StorageHelper.UploadFileToStorage(stream, fileName, _configuration);
                         }
                     }
 
@@ -79,9 +79,9 @@ namespace RunningDinner.Controllers
                 {
                     if (!string.IsNullOrEmpty(thumbnailContainer))
                     {
-                        var user = await _userManager.GetUserAsync(User).ConfigureAwait(false);
+                        var user = await _userManager.GetUserAsync(User);
                         user.TemporaryProfilePicture = baseUrl + imageContainer + "/" + fileName;
-                        await _userManager.UpdateAsync(user).ConfigureAwait(false);
+                        await _userManager.UpdateAsync(user);
                         return new AcceptedResult();
                     }
 
@@ -122,7 +122,7 @@ namespace RunningDinner.Controllers
                     return BadRequest("Please provide a name for your image container in the azure blob storage");
                 }
 
-                List<string> thumbnailUrls = await StorageHelper.GetThumbNailUrls(_configuration).ConfigureAwait(false);
+                List<string> thumbnailUrls = await StorageHelper.GetThumbNailUrls(_configuration);
                 return new ObjectResult(thumbnailUrls);
             }
 

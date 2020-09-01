@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using GeoCoordinatePortable;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -36,16 +37,12 @@ namespace RunningDinner.Areas.Events.Pages
             TeamsRepository = teamsRepository;
         }
 
-        public List<SelectListItem> Courses { get; set; } = new List<SelectListItem>();
-
         public List<SelectListItem> Participants { get; set; } = new List<SelectListItem>();
 
         public List<SelectListItem> Addresses { get; set; } = new List<SelectListItem>();
 
-        [BindProperty]
         public List<SelectListItem> Teams { get; set; }
 
-        [BindProperty]
         public List<Route> Routes { get; set; }
 
         public List<SelectListItem> Users { get; set; }
@@ -55,7 +52,7 @@ namespace RunningDinner.Areas.Events.Pages
             if (HttpContext.Session.GetString("EventId") == null)
             {
                 string returnUrl = HttpContext.Request.Path.ToString();
-                return RedirectToPage("/Account/Login", new { area = "Identity" });
+                return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl });
             }
 
             ViewData["IsParticipating"] = HttpContext.Session.GetString("IsParticipating");
@@ -112,15 +109,8 @@ namespace RunningDinner.Areas.Events.Pages
                 .ToList();
             }
 
-            Users = participantsSelectList;
             Addresses = addressesSelectList;
             Participants = participantsSelectList;
-            Courses = new List<SelectListItem>
-            {
-                new SelectListItem {Value = "FirstCourse", Text = "Vorspeise"},
-                new SelectListItem {Value = "SecondCourse", Text = "Hauptgang"},
-                new SelectListItem {Value = "ThirdCourse", Text = "Nachtisch"}
-            };
 
             var teamsList = TeamsRepository.SearchFor(x => x.Event.Id == eventId).ToList();
             List<SelectListItem> teamsSelectList = new List<SelectListItem> { new SelectListItem { Value = "empty", Text = "" } };
@@ -138,12 +128,12 @@ namespace RunningDinner.Areas.Events.Pages
         /// PageHandler for creating routes automatically.
         /// </summary>
         /// <returns></returns>
-        public IActionResult OnPostCreateRoutes(int factor)
+        public async Task<IActionResult> OnPostCreateRoutes(int factor)
         {
             if (HttpContext.Session.GetString("EventId") == null)
             {
                 string returnUrl = HttpContext.Request.Path.ToString();
-                return RedirectToPage("/Account/Login", new { area = "Identity" });
+                return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl });
             }
 
             ViewData["IsParticipating"] = HttpContext.Session.GetString("IsParticipating");
@@ -152,11 +142,11 @@ namespace RunningDinner.Areas.Events.Pages
             List<CalculationHost> FirstCourseHosts = new List<CalculationHost>();
             List<CalculationHost> SecondCourseHosts = new List<CalculationHost>();
             List<CalculationHost> ThirdCourseHosts = new List<CalculationHost>();
-            var teams = TeamsRepository.SearchFor(x => x.Event.Id == eventId).ToList();
             int routeFactor = factor;
             int numberOfRoutes = routeFactor * 3;
-            // First Course Teams
-            foreach(Team team in teams)
+            var teams = TeamsRepository.SearchFor(x => x.Event.Id == eventId).Take(numberOfRoutes).ToList();
+            ///////////////////////////// Sort teams by course
+            foreach (Team team in teams)
             {
                 if (team.SelectedCourse == "FirstCourse")
                 {
@@ -180,20 +170,20 @@ namespace RunningDinner.Areas.Events.Pages
             //////////////////////////////// Get GeoCoordinates
             foreach (var secondCourseHost in SecondCourseHosts)
             {
-                var address = secondCourseHost.HostTeam.AddressStreet + " " + secondCourseHost.HostTeam.AddressNumber + "," + secondCourseHost.HostTeam.City;
-                secondCourseHost.Coordinates = HereMapsHelper.GetCoordinates(address);
+                var address = secondCourseHost.HostTeam.FullAddress + "," + secondCourseHost.HostTeam.City;
+                secondCourseHost.Coordinates = await HereMapsHelper.GetCoordinates(address);
             }
 
             foreach (var thirdCourseHost in ThirdCourseHosts)
             {
-                var address = thirdCourseHost.HostTeam.AddressStreet + " " + thirdCourseHost.HostTeam.AddressNumber + "," + thirdCourseHost.HostTeam.City;
-                thirdCourseHost.Coordinates = HereMapsHelper.GetCoordinates(address);
+                var address = thirdCourseHost.HostTeam.FullAddress + "," + thirdCourseHost.HostTeam.City;
+                thirdCourseHost.Coordinates = await HereMapsHelper.GetCoordinates(address);
             }
 
             foreach (var firstCourseHost in FirstCourseHosts)
             {
-                var address = firstCourseHost.HostTeam.AddressStreet + " " + firstCourseHost.HostTeam.AddressNumber + "," + firstCourseHost.HostTeam.City;
-                firstCourseHost.Coordinates = HereMapsHelper.GetCoordinates(address);
+                var address = firstCourseHost.HostTeam.FullAddress + "," + firstCourseHost.HostTeam.City;
+                firstCourseHost.Coordinates = await HereMapsHelper.GetCoordinates(address);
             }
 
             /////////////////////////////// Calculate Distances
@@ -203,10 +193,12 @@ namespace RunningDinner.Areas.Events.Pages
                 secondCourseHost.HostDistancesToFirst = new List<RouteNodeDistance>();
                 foreach (var firstCourseHost in FirstCourseHosts)
                 {
-                    RouteNodeDistance hostDistance = new RouteNodeDistance();
-                    hostDistance.Host1 = secondCourseHost;
-                    hostDistance.Distance = secondCourseHost.Coordinates.GetDistanceTo(firstCourseHost.Coordinates);
-                    hostDistance.Host2 = firstCourseHost;
+                    RouteNodeDistance hostDistance = new RouteNodeDistance
+                    {
+                        Host1 = secondCourseHost,
+                        Distance = secondCourseHost.Coordinates.GetDistanceTo(firstCourseHost.Coordinates),
+                        Host2 = firstCourseHost
+                    };
                     secondCourseHost.HostDistancesToFirst.Add(hostDistance);
                 }
 
@@ -215,10 +207,12 @@ namespace RunningDinner.Areas.Events.Pages
                 secondCourseHost.HostDistancesToThird = new List<RouteNodeDistance>();
                 foreach (var thirdCourseHost in ThirdCourseHosts)
                 {
-                    RouteNodeDistance hostDistance = new RouteNodeDistance();
-                    hostDistance.Host1 = secondCourseHost;
-                    hostDistance.Distance = secondCourseHost.Coordinates.GetDistanceTo(thirdCourseHost.Coordinates);
-                    hostDistance.Host2 = thirdCourseHost;
+                    RouteNodeDistance hostDistance = new RouteNodeDistance
+                    {
+                        Host1 = secondCourseHost,
+                        Distance = secondCourseHost.Coordinates.GetDistanceTo(thirdCourseHost.Coordinates),
+                        Host2 = thirdCourseHost
+                    };
                     secondCourseHost.HostDistancesToThird.Add(hostDistance);
                 }
 
@@ -239,16 +233,8 @@ namespace RunningDinner.Areas.Events.Pages
                 }
             }
 
-            int k = 0;
             foreach (var secondCourseHost in SecondCourseHosts)
             {
-                // Start from second SecondCourseHost
-                if (k == 0)
-                {
-                    k++;
-                    continue;
-                }
-
                 // Shortest Distance from SecondCourse To ThirdCourse 
                 foreach (var hostDistance in secondCourseHost.HostDistancesToThird)
                 {
@@ -258,23 +244,9 @@ namespace RunningDinner.Areas.Events.Pages
                         break;
                     }
                 }
-
-                k++;
             }
 
-            // Handle remaining SecondCourseHost
-            var firstSecondCourseHost = SecondCourseHostsOrdered.FirstOrDefault();
-            // SecondCourse To ThirdCourse 
-            foreach (var hostDistance in firstSecondCourseHost.HostDistancesToThird)
-            {
-                if (!ThirdCourseHostsOrdered.Contains(hostDistance.Host2))
-                {
-                    ThirdCourseHostsOrdered.Add(hostDistance.Host2);
-                    break;
-                }
-            }
-
-            //////////////////// Set SecondCourseHosts (use only Ordered Hosts from here!)
+            //////////////////// Set SecondCourseHosts (use only ordered Hosts from here!)
             // Start from First
             int i = 0;
             // Start from Second
@@ -350,13 +322,15 @@ namespace RunningDinner.Areas.Events.Pages
             // Add SecondCourse routes
             foreach (var host in SecondCourseHostsOrdered)
             {
-                Route newRoute = new Route();
-                newRoute.Event = dinnerEvent;
-                newRoute.RouteForTeam = host.HostTeam;
-                // Second Course
-                newRoute.SecondCourseHostTeam = host.HostTeam;
-                newRoute.SecondCourseGuestTeam1 = host.GuestTeam1;
-                newRoute.SecondCourseGuestTeam2 = host.GuestTeam2;
+                Route newRoute = new Route
+                {
+                    Event = dinnerEvent,
+                    RouteForTeam = host.HostTeam,
+                    // Second Course
+                    SecondCourseHostTeam = host.HostTeam,
+                    SecondCourseGuestTeam1 = host.GuestTeam1,
+                    SecondCourseGuestTeam2 = host.GuestTeam2
+                };
                 // First Course
                 var firstCourseHostList = from r in FirstCourseHostsOrdered
                                       where r.GuestTeam1.Id == host.HostTeam.Id
@@ -379,13 +353,15 @@ namespace RunningDinner.Areas.Events.Pages
             // Add ThirdCourse routes
             foreach (var host in ThirdCourseHostsOrdered)
             {
-                Route newRoute = new Route();
-                newRoute.Event = dinnerEvent;
-                newRoute.RouteForTeam = host.HostTeam;
-                // Third Course
-                newRoute.ThirdCourseHostTeam = host.HostTeam;
-                newRoute.ThirdCourseGuestTeam1 = host.GuestTeam1;
-                newRoute.ThirdCourseGuestTeam2 = host.GuestTeam2;
+                Route newRoute = new Route
+                {
+                    Event = dinnerEvent,
+                    RouteForTeam = host.HostTeam,
+                    // Third Course
+                    ThirdCourseHostTeam = host.HostTeam,
+                    ThirdCourseGuestTeam1 = host.GuestTeam1,
+                    ThirdCourseGuestTeam2 = host.GuestTeam2
+                };
                 // First Course
                 var firstCourseHostList = from r in FirstCourseHostsOrdered
                                       where r.GuestTeam2.Id == host.HostTeam.Id
@@ -408,13 +384,15 @@ namespace RunningDinner.Areas.Events.Pages
             // Add FirstCourse routes
             foreach (var host in FirstCourseHostsOrdered)
             {
-                Route newRoute = new Route();
-                newRoute.Event = dinnerEvent;
-                newRoute.RouteForTeam = host.HostTeam;
-                // First Course
-                newRoute.FirstCourseHostTeam = host.HostTeam;
-                newRoute.FirstCourseGuestTeam1 = host.GuestTeam1;
-                newRoute.FirstCourseGuestTeam2 = host.GuestTeam2;
+                Route newRoute = new Route
+                {
+                    Event = dinnerEvent,
+                    RouteForTeam = host.HostTeam,
+                    // First Course
+                    FirstCourseHostTeam = host.HostTeam,
+                    FirstCourseGuestTeam1 = host.GuestTeam1,
+                    FirstCourseGuestTeam2 = host.GuestTeam2
+                };
                 // Second Course
                 var secondCourseHostList = from r in SecondCourseHostsOrdered
                                        where r.GuestTeam2.Id == host.HostTeam.Id
@@ -447,29 +425,41 @@ namespace RunningDinner.Areas.Events.Pages
             if (HttpContext.Session.GetString("EventId") == null)
             {
                 string returnUrl = HttpContext.Request.Path.ToString();
-                return RedirectToPage("/Account/Login", new { area = "Identity" });
+                return RedirectToPage("/Account/Login", new { area = "Identity", returnUrl });
             }
 
             ViewData["IsParticipating"] = HttpContext.Session.GetString("IsParticipating");
             if (route != null)
             {
+                Route existingRoute;
                 using (var context = new ApplicationDbContext())
                 {
-                    var existingRoute = context.Routes.FirstOrDefault(x => x.Id == route.Id);
-                    context.Entry(existingRoute).State = EntityState.Detached;
-                    existingRoute.RouteForTeam = route.RouteForTeam;
-                    existingRoute.FirstCourseHostTeam = route.FirstCourseHostTeam;
-                    existingRoute.FirstCourseGuestTeam1 = route.FirstCourseGuestTeam1;
-                    existingRoute.FirstCourseGuestTeam2 = route.FirstCourseGuestTeam2;
-                    existingRoute.SecondCourseHostTeam = route.SecondCourseHostTeam;
-                    existingRoute.SecondCourseGuestTeam1 = route.SecondCourseGuestTeam1;
-                    existingRoute.SecondCourseGuestTeam2 = route.SecondCourseGuestTeam2;
-                    existingRoute.ThirdCourseHostTeam = route.ThirdCourseHostTeam;
-                    existingRoute.ThirdCourseGuestTeam1 = route.ThirdCourseGuestTeam1;
-                    existingRoute.ThirdCourseGuestTeam2 = route.ThirdCourseGuestTeam2;
-                    context.Entry(existingRoute).State = EntityState.Modified;
-                    context.SaveChanges();
+                    existingRoute = context.Routes.AsNoTracking().Where(x => x.Id == route.Id).Include("Event")
+                    .Include(a => a.RouteForTeam)
+                    .Include(a => a.FirstCourseHostTeam)
+                    .Include(a => a.FirstCourseGuestTeam1)
+                    .Include(a => a.FirstCourseGuestTeam2)
+                    .Include(a => a.SecondCourseHostTeam)
+                    .Include(a => a.SecondCourseGuestTeam1)
+                    .Include(a => a.SecondCourseGuestTeam2)
+                    .Include(a => a.ThirdCourseHostTeam)
+                    .Include(a => a.ThirdCourseGuestTeam1)
+                    .Include(a => a.ThirdCourseGuestTeam2)
+                    .FirstOrDefault();
                 }
+
+                existingRoute.RouteForTeam = route.RouteForTeam;
+                existingRoute.FirstCourseHostTeam = route.FirstCourseHostTeam;
+                existingRoute.FirstCourseGuestTeam1 = route.FirstCourseGuestTeam1;
+                existingRoute.FirstCourseGuestTeam2 = route.FirstCourseGuestTeam2;
+                existingRoute.SecondCourseHostTeam = route.SecondCourseHostTeam;
+                existingRoute.SecondCourseGuestTeam1 = route.SecondCourseGuestTeam1;
+                existingRoute.SecondCourseGuestTeam2 = route.SecondCourseGuestTeam2;
+                existingRoute.ThirdCourseHostTeam = route.ThirdCourseHostTeam;
+                existingRoute.ThirdCourseGuestTeam1 = route.ThirdCourseGuestTeam1;
+                existingRoute.ThirdCourseGuestTeam2 = route.ThirdCourseGuestTeam2;
+                RoutesRepository.Update(existingRoute);
+                RoutesRepository.SaveChanges();
             }
 
             return RedirectToPage();
@@ -517,14 +507,14 @@ namespace RunningDinner.Areas.Events.Pages
             return OnGet();
         }
 
-        public class RouteNodeDistance
+        private class RouteNodeDistance
         {
             public CalculationHost Host1 { get; set; }
             public CalculationHost Host2 { get; set; }
             public double Distance { get; set; }
         }
 
-        public class CalculationHost
+        private class CalculationHost
         {
             public Team HostTeam { get; set; }
             public Team GuestTeam1 { get; set; }
@@ -534,7 +524,7 @@ namespace RunningDinner.Areas.Events.Pages
             public List<RouteNodeDistance> HostDistancesToThird { get; set; }
         }
 
-        public class CalculationRoute
+        private class CalculationRoute
         {
             public int Id { get; set; }
             public CalculationHost FirstCourse { get; set; }

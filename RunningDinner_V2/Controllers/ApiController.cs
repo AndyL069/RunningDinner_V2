@@ -30,7 +30,7 @@ namespace RunningDinner.Controllers
             // Send the email
             string apiKey = Configuration?.GetEmailSettings("apiKey");
             string apiSecret = Configuration?.GetEmailSettings("apiSecret");
-            bool success = await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1112074, mailBody.Name, mailBody.Email, mailBody.Message).ConfigureAwait(false);
+            bool success = await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1112074, mailBody.Name, mailBody.Email, mailBody.Message);
             if (success)
             {
                 return Ok();

@@ -71,21 +71,21 @@ namespace RunningDinner.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("~/");
             // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme).ConfigureAwait(false);
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync().ConfigureAwait(false)).ToList();
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             ReturnUrl = returnUrl;
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync().ConfigureAwait(false)).ToList();
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             ReturnUrl = returnUrl;
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true).ConfigureAwait(false);
+                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -118,20 +118,20 @@ namespace RunningDinner.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync().ConfigureAwait(false)).ToList();
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            var user = await _userManager.FindByEmailAsync(Input.Email).ConfigureAwait(false);
+            var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "Bestätigungsmail wurde versendet. Bitte schaue in deinen E-Mails nach.");
             }
 
-            var userId = await _userManager.GetUserIdAsync(user).ConfigureAwait(false);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user).ConfigureAwait(false);
+            var userId = await _userManager.GetUserIdAsync(user);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
@@ -140,7 +140,7 @@ namespace RunningDinner.Areas.Identity.Pages.Account
 
             string apiKey = Configuration?.GetEmailSettings("apiKey");
             string apiSecret = Configuration?.GetEmailSettings("apiSecret");
-            await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1080920, "Bitte bestätige deine Emailadresse", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", user.FirstName, user.Email, user.FirstName + " " + user.LastName, callbackUrl).ConfigureAwait(false);
+            await _emailSender.SendMailjetAsync(apiKey, apiSecret, 1080920, "Bitte bestätige deine Emailadresse", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", user.FirstName, user.Email, user.FirstName + " " + user.LastName, callbackUrl);
             ModelState.AddModelError(string.Empty, "Bestätigungsmail wurde versendet. Bitte schaue in deinen E-Mails nach.");
             return Page();
         }

@@ -30,10 +30,11 @@ namespace RunningDinner
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = "Prod";
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("Dev")));
-            ConnectionString = Configuration.GetConnectionString("Dev");
+                    Configuration.GetConnectionString(connectionString)));
+            ConnectionString = Configuration.GetConnectionString(connectionString);
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>().AddErrorDescriber<IdentityErrorExtensions>();

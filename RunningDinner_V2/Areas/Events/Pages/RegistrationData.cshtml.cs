@@ -95,7 +95,7 @@ namespace RunningDinner.Areas.Events.Pages
             public string AddressStreet { get; set; }
 
             [Required(ErrorMessage = "Hausnummer muss ausgefüllt sein")]
-            [Display(Name = "Nummer")]
+            [Display(Name = "Hausnr.")]
             public string AddressNumber { get; set; }
 
             [Display(Name = "Adresszusatz")]
@@ -123,7 +123,7 @@ namespace RunningDinner.Areas.Events.Pages
         /// <returns></returns>
         public async Task<IActionResult> OnGetAsync(int eventId)
         {
-            var user = await UserManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+            var user = await UserManager.GetUserAsync(HttpContext.User);
             bool isSignedIn = SignInManager.IsSignedIn(User);
             if (!isSignedIn)
             {
@@ -263,7 +263,7 @@ namespace RunningDinner.Areas.Events.Pages
                 return Page();
             }
 
-            var user = await UserManager.GetUserAsync(User).ConfigureAwait(false);
+            var user = await UserManager.GetUserAsync(User);
             if (user == null)
             {
                 throw new ApplicationException($"Unable to load user with ID '{UserManager.GetUserId(User)}'.");
@@ -313,9 +313,9 @@ namespace RunningDinner.Areas.Events.Pages
                     // Add contact to Mailjet Contacts, save ContactId
                     string apiKey = Configuration?.GetEmailSettings("apiKey");
                     string apiSecret = Configuration?.GetEmailSettings("apiSecret");
-                    int listRecipientId = await EmailSender.AddContactToContactListAsync(apiKey, apiSecret, user.ContactId.ToString(CultureInfo.InvariantCulture), dinnerEvent.ContactList.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
+                    long listRecipientId = await EmailSender.AddContactToContactListAsync(apiKey, apiSecret, user.ContactId.ToString(CultureInfo.InvariantCulture), dinnerEvent.ContactList.ToString(CultureInfo.InvariantCulture));
                     user.ListRecipientId = listRecipientId;
-                    await UserManager.UpdateAsync(user).ConfigureAwait(false);
+                    await UserManager.UpdateAsync(user);
                 }
 
                 else
@@ -336,7 +336,7 @@ namespace RunningDinner.Areas.Events.Pages
                     EventParticipationsRepository.SaveChanges();
                 }
 
-                await OnPostSendPartnerInvitation(eventId, Input.PartnerFirstName, Input.PartnerLastName, Input.PartnerEmail, user.Id).ConfigureAwait(false);
+                await OnPostSendPartnerInvitation(eventId, Input.PartnerFirstName, Input.PartnerLastName, Input.PartnerEmail, user.Id);
                 TempData["StatusMessage"] = "Deine Anmeldung wurde gespeichert. Eine Einladung wurde an " + Input.PartnerEmail +
                     " geschickt. Die Anmeldung ist vollständig sobald dein Partner bestätigt hat.";
             }
@@ -372,7 +372,7 @@ namespace RunningDinner.Areas.Events.Pages
         /// <param name="userId"></param>
         public async Task<IActionResult> OnPostSendPartnerInvitation(int eventId, string partnerFirstName, string partnerLastName, string partnerEmail, string userId)
         {
-            ApplicationUser user = await UserManager.FindByIdAsync(userId).ConfigureAwait(false);
+            ApplicationUser user = await UserManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return Page();
@@ -413,7 +413,7 @@ namespace RunningDinner.Areas.Events.Pages
             // Send the email
             string apiKey = Configuration?.GetEmailSettings("apiKey");
             string apiSecret = Configuration?.GetEmailSettings("apiSecret");
-            await EmailSender.SendMailjetAsync(apiKey, apiSecret, 1081044, "Du wurdest zum Großstadt Dinner eingeladen", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", partnerFirstName, partnerEmail, partnerFirstName + " " + partnerLastName, callbackLink, user.FirstName, dinnerEvent.EventName, dinnerEvent.EventDate.ToShortDateString()).ConfigureAwait(false);
+            await EmailSender.SendMailjetAsync(apiKey, apiSecret, 1081044, "Du wurdest zum Großstadt Dinner eingeladen", "admin@grossstadtdinner.de", "Das Großstadt Dinner Team", partnerFirstName, partnerEmail, partnerFirstName + " " + partnerLastName, callbackLink, user.FirstName, dinnerEvent.EventName, dinnerEvent.EventDate.ToShortDateString());
             TempData["StatusMessage"] = @"Eine Einladung wurde an " + partnerEmail + " geschickt.";
             return Page();
         }
@@ -432,7 +432,7 @@ namespace RunningDinner.Areas.Events.Pages
 
             var eventId = int.Parse(HttpContext.Session.GetString("EventId"), CultureInfo.CurrentCulture);
             var dinnerEvent = DinnerEventsRepository.GetById(eventId);
-            var user = await UserManager.GetUserAsync(HttpContext.User).ConfigureAwait(false);
+            var user = await UserManager.GetUserAsync(HttpContext.User);
             EventParticipation eventParticipation = EventParticipationsRepository.SearchFor(x => x.User == user && x.Event == dinnerEvent).FirstOrDefault();
             EventParticipationsRepository.Delete(eventParticipation);
             EventParticipationsRepository.SaveChanges();
@@ -527,12 +527,12 @@ namespace RunningDinner.Areas.Events.Pages
                 string apiSecret = Configuration?.GetEmailSettings("apiSecret");
                 if (team.Partner1 != null)
                 {
-                    await EmailSender.RemoveListRecipientAsync(apiKey, apiSecret, team.Partner1.ListRecipientId).ConfigureAwait(false);
+                    await EmailSender.RemoveListRecipientAsync(apiKey, apiSecret, team.Partner1.ListRecipientId);
                 }
 
                 if (team.Partner2 != null)
                 {
-                    await EmailSender.RemoveListRecipientAsync(apiKey, apiSecret, team.Partner2.ListRecipientId).ConfigureAwait(false);
+                    await EmailSender.RemoveListRecipientAsync(apiKey, apiSecret, team.Partner2.ListRecipientId);
                 }
 
                 TeamsRepository.Delete(team);
